@@ -1,6 +1,17 @@
-# Getting Started with Create React App
+# This is a personal porfolio website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Tech used
+
+### React
+### Framer-motion (for animation of this website)
+### Tailwind css (for the styling of this website)
+### React-Bootstarp (little bit for only alert)
+### Email js (for submitting form via email)
+
+
+# Responsive 
+ the website is fully responsive for the computer tablet as well as mobile
+ 
 
 ## Available Scripts
 
