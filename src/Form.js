@@ -111,6 +111,7 @@ function Form() {
   const form = React.useRef();
 
   const sendEmail = (e) => {
+    
     e.preventDefault();
 
     emailjs

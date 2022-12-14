@@ -8,8 +8,12 @@ import  Form  from './Form';
 import Footer from './Footer';
 import {Routes,Route } from "react-router-dom";
 import Aboutme from './Aboutme';
+import LoginForm from './LoginForm';
 import {useLocation} from "react-router-dom";
 import {AnimatePresence} from "framer-motion";
+import AdminDashBoard from './AdminDashBoard';
+import Sidebar from './Sidebar';
+
 function App() {
   const location =useLocation();
   return (
@@ -24,6 +28,9 @@ function App() {
 <Route path='/skills' element={<Skills/>}/>
 <Route path='/Contact' element={<Form/>}/>
 <Route path='/About' element={<Aboutme/>}/>
+<Route path='/admin' element={<LoginForm/>}/>
+
+<Route path='/AdminDashboard' element={<AdminDashBoard/>}></Route>
 </Routes>
 </AnimatePresence>
 <Footer/>
