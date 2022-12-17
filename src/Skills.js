@@ -206,21 +206,21 @@ const allskill = SkillSarr.map((skill) => {
           animate="visible"
           src={skill.images.image1}
           alt="not found"
-          className=" sm:h-1/4 sm:w-1/6 h-1/4 w-1/4 absolute shadow-xl shadow-white rounded-xl bg-white"
+          className=" sm:h-1/4 sm:w-1/6 h-1/4 w-1/4 absolute shadow-lg shadow-white rounded-xl bg-white"
         ></motion.img>
         <motion.img
           variants={image2}
           animate="visible"
           src={skill.images.image2}
           alt="not found"
-          className=" sm:h-1/4 sm:w-1/6 h-1/4 w-1/4 absolute shadow-xl shadow-white rounded-xl bg-white"
+          className=" sm:h-1/4 sm:w-1/6 h-1/4 w-1/4 absolute shadow-xl shadow-gray-600 rounded-xl bg-white"
         />
         <motion.img
           variants={image1}
           animate="visible"
           src={skill.images.image3}
           alt="not found"
-          className="sm:h-1/4 sm:w-1/6  h-1/4 w-1/4 absolute shadow-xl shadow-white rounded-xl bg-white"
+          className="sm:h-1/4 sm:w-1/6  h-1/4 w-1/4 absolute shadow-xl shadow-black rounded-xl bg-white"
         />
         </div>
       </motion.div>
@@ -229,7 +229,7 @@ const allskill = SkillSarr.map((skill) => {
 });
 function Skills() {
   return (
-    <motion.div className="h-full py-10 pb-10 place-content-center"
+    <motion.div className="min-h-screen py-10 pb-10 place-content-center"
     
     variants={exitAnime}
     exit="exit"
@@ -253,7 +253,7 @@ function Skills() {
       <div className="grid md:grid-cols-3 
       sm:grid-cols-2 grid-cols-1  sm:gap-y-48 sm:gap-x-64 gap-y-72 pb-16  place-content-center sm:px-20 sm:pb-20 px-32">
         {allskill}
-        <div></div>
+      <div></div>
       </div>
      
     </motion.div>

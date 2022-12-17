@@ -12,7 +12,9 @@ import LoginForm from './LoginForm';
 import {useLocation} from "react-router-dom";
 import {AnimatePresence} from "framer-motion";
 import AdminDashBoard from './AdminDashBoard';
-import Sidebar from './Sidebar';
+import UserReg from './UserReg';
+import AddSkills  from './AddSkills';
+import ChangePic from './ChangePic';
 
 function App() {
   const location =useLocation();
@@ -31,6 +33,9 @@ function App() {
 <Route path='/admin' element={<LoginForm/>}/>
 
 <Route path='/AdminDashboard' element={<AdminDashBoard/>}></Route>
+<Route path='/RegisterUser' element={<UserReg/>}></Route>
+<Route path='/AddSkill' element={<AddSkills/>}></Route>
+<Route path='/ChangePic' element={<ChangePic/>}></Route>
 </Routes>
 </AnimatePresence>
 <Footer/>

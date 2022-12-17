@@ -1,60 +1,53 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
 
-import { left,right,top,bottom,exitAnime } from "./Anime";
-function LoginForm() {
+import Sidebar from "./Sidebar";
+import { left, right, top, bottom, exitAnime } from "./Anime";
+
+const UserReg = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
-  const [data,setdata]=useState("")
+  const [data, setdata] = useState({});
   const UserName = useRef();
   const password = useRef();
+  const email = useRef();
+  const role = useRef();
 
-  const Login = async(e) => {
+  const Register = async (e) => {
     e.preventDefault();
 
+    const registerdata = {
+      UserName: UserName.current.value,
+      email: email.current.value,
+      password: password.current.value,
+      role: role.current.value,
+    };
 
-   const logindata={
-UserName:UserName.current.value,
-password:password.current.value,
-
-   }
-  try {
-    const res= await axios.post("http://localhost:5001/login", logindata);
-    if(!res.data.success){
-
+    try {
+      const res = await axios.post("/register", registerdata);
+      if (!res.data.success) {
+        setsuccess(false);
+        setdata(res.data.message);
+        setshow(true);
+      } else {
+        setsuccess(true);
+        setdata(res.data.message);
+        setshow(true);
+      }
+    } catch (error) {
       setsuccess(false);
-      setdata(res.data.message);
+      setdata(error.message);
       setshow(true);
-  }
-  else{
-    setsuccess(false);
-    setdata(res.data.message);
-    setshow(true);
-
-  }
-  } catch (error) {
-    
-  }
- 
-
-
-
- 
-  
-
-   
-
-   
-    
-
+    }
   };
   return (
-    <motion.div className="min-h-screen " variants={exitAnime} exit="exit">
-      <form  onSubmit={Login}>
+    <motion.div className="min-h-screen flex " variants={exitAnime} exit="exit">
+      <Sidebar />
+
+      <form onSubmit={Register} className="w-10/12 ml-2">
         <div className="my-32 px-20">
-        
           <motion.h4
             className="text-gray-400 text-center capitalize pb-3  font-Nerko"
             variants={top}
@@ -62,10 +55,10 @@ password:password.current.value,
             animate="visible"
             whileHover="hover"
           >
-            Login{" "}
+            Register User{" "}
           </motion.h4>
 
-          <div className="grid  lg:px-60 gap-x-2 gap-y-4 ">
+          <div className="grid lg:px-36 gap-x-2 gap-y-4 ">
             <div className="sm:col-span-2">
               {show && (
                 <Alert
@@ -76,9 +69,7 @@ password:password.current.value,
                   <Alert.Heading>
                     {suceess ? "successfull" : "failed"}
                   </Alert.Heading>
-                  <p>
-                    {data}
-                  </p>
+                  <p>{data} </p>
                 </Alert>
               )}
             </div>
@@ -86,9 +77,9 @@ password:password.current.value,
               variants={left}
               initial="hidden"
               animate="visible"
-              required
               minLength={5}
               placeholder="Username"
+              required
               ref={UserName}
               name="UserName"
               autoComplete="none"
@@ -98,13 +89,39 @@ password:password.current.value,
             <motion.input
               variants={right}
               initial="hidden"
-              ref={password}
+              ref={email}
               required
+              minLength={10}
               animate="visible"
+              placeholder="email"
+              type={"email"}
+              name="email"
+              autoComplete="none"
+              className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
+            />
+            <motion.input
+              variants={left}
+              initial="hidden"
+              ref={password}
+              animate="visible"
+              required
+              minLength={8}
               placeholder="password"
               type={"password"}
-              minLength={8}
               name="password"
+              autoComplete="none"
+              className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
+            />
+            <motion.input
+              variants={left}
+              initial="hidden"
+              ref={role}
+              minLength={5}
+              required
+              animate="visible"
+              placeholder="Role"
+              type={"text"}
+              name="text"
               autoComplete="none"
               className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
             />
@@ -116,14 +133,13 @@ password:password.current.value,
               animate="visible"
               whileHover="hover"
             >
-              Login
+              Register
             </motion.button>
           </div>
         </div>
       </form>
-      
     </motion.div>
   );
-}
+};
 
-export default LoginForm;
+export default UserReg;
