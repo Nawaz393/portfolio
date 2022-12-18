@@ -15,7 +15,7 @@ import AdminDashBoard from './AdminDashBoard';
 import UserReg from './UserReg';
 import AddSkills  from './AddSkills';
 import ChangePic from './ChangePic';
-
+import ChangeQuote from './ChangeQuote';
 function App() {
   const location =useLocation();
   return (
@@ -36,6 +36,8 @@ function App() {
 <Route path='/RegisterUser' element={<UserReg/>}></Route>
 <Route path='/AddSkill' element={<AddSkills/>}></Route>
 <Route path='/ChangePic' element={<ChangePic/>}></Route>
+
+<Route path='/ChangeQuote' element={<ChangeQuote/>}> </Route>
 </Routes>
 </AnimatePresence>
 <Footer/>

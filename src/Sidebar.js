@@ -1,45 +1,89 @@
-import React ,{useState}from 'react';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 
-import {faBars} from '@fortawesome/free-solid-svg-icons'
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+
+const SideAnime = {
+  hidden: {
+    x: "-100vh",
+  },
+  visible: {
+    x: 0,
+    transition: {
+      type: "spring",
+      duration: 1.5,
+    },
+  },
+};
+
+const LinkAnime = {
+  hover: {
+    x: 20,
+    scale: 1.2,
+    color: "#fff",
+    transition: {
+      type: "spring",
+    },
+  },
+};
 const Sidebar = () => {
- const [toggle,settoggle]=useState(false);
+  const [toggle, settoggle] = useState(false);
 
-
-        
-    const item =
-    [
-    { page: "Home", link: "/" },
-    { page: "Skills", link: "skills" },
-    { page: "Contact Me", link: "contact" },
-    { page: "About Me", link: "About" },
+  const item = [
+    { page: "ChangePic", link: "/ChangePic" },
+    { page: "Add Skills", link: "/AddSkill" },
+    { page: "Add Quote", link: "/ChangeQuote" },
+    { page: "New User", link: "/RegisterUser" },
   ];
 
-  const sidebsritem=item.map(item=>{
-
-return(
-
-
-    <li className= ' border-0 shadow-slate-800 shadow-lg rounded-full py-1 my-1  ' key={item.link}> <Link className='no-underline text-slate-200 md:text-lg text-sm md:font-semibold tracking-tighter font-Nunito' to={item.link}>{item.page}</Link></li>
-)
-
-
-  })
-
+  const sidebsritem = item.map((item) => {
     return (
-        
-        
-        <aside className=  'mt-3  h-screen  sm:w-36 sm:bg-slate-800 rounded-r-lg relative' >
-            <button className='mx-1 sm:hidden' onClick={()=>{settoggle(!toggle)}} ><FontAwesomeIcon icon={faBars}  size="lg" color="white" /></button>
-            <ul className={ toggle?'flex flex-col items-start py-6  ':"sm:flex flex-col py-6  hidden"}>
-                
-
-              {sidebsritem}
-            </ul>
-        </aside>
-       
+      <motion.li
+        variants={LinkAnime}
+       whileHover="hover"
+     
+        className=" border-0 shadow-slate-800 shadow-lg rounded-full py-1 my-1  "
+        key={item.link}
+      >
+        {" "}
+        <Link
+          className="no-underline text-slate-200 md:text-lg text-sm md:font-semibold tracking-tighter font-Nunito"
+          to={item.link}
+        >
+          {item.page}
+        </Link>
+      </motion.li>
     );
-}
+  });
+
+  return (
+    <motion.aside className="mt-3  h-screen  sm:w-36 sm:bg-slate-800 rounded-r-lg relative"
+    variants={SideAnime}
+    initial="hidden"
+    animate="visible"
+    
+    >
+      <button
+        className="mx-1 sm:hidden"
+        onClick={() => {
+          settoggle(!toggle);
+        }}
+      >
+        <FontAwesomeIcon icon={faBars} size="lg" color="white" />
+      </button>
+      <ul
+        className={
+          toggle
+            ? "flex flex-col items-start py-6  "
+            : "sm:flex flex-col py-6  hidden"
+        }
+      >
+        {sidebsritem}
+      </ul>
+    </motion.aside>
+  );
+};
 
 export default Sidebar;

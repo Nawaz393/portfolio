@@ -4,42 +4,24 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { Alert } from "react-bootstrap";
 import Sidebar from "./Sidebar";
-const ChangePic = () => {
+const ChangeQuote = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
   const [data, setdata] = useState({});
+  const Quote = useRef();
 
-  const [upload, setUpload] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      const img = await axios.get("/myimage");
-        
-      if (img.data.success) {
-        setUpload(false);
-      } else {
-        setUpload(true);
-      }
-    })();
-  }, []);
+ 
 
-  const image = useRef();
-
-  const AddImage = async (e) => {
+  const ChangeQuote = async (e) => {
     e.preventDefault();
 
-    const imagedata = {
-      image: image.current.value,
+    const quotedata = {
+      Quote: Quote.current.value,
     };
 
-let res;
-    if(upload){
-        res=await axios.post("/myimage",imagedata)
-    }
-    else{
-        res = await axios.put("/myimage", imagedata);
-    }
 
+    const res = await axios.put("/Quote",quotedata);
     if (!res.data.success) {
       setsuccess(false);
       setdata(res.data.message);
@@ -55,7 +37,7 @@ let res;
     <motion.div className="min-h-screen flex " variants={exitAnime} exit="exit">
       <Sidebar />
 
-      <form onSubmit={AddImage} className=" w-10/12  ml-2">
+      <form onSubmit={ChangeQuote} className=" w-10/12  ml-2">
         <div className="my-32 px-20">
           <motion.h4
             className="text-gray-400 text-center capitalize pb-3  font-Nerko"
@@ -64,7 +46,7 @@ let res;
             animate="visible"
             whileHover="hover"
           >
-            Change Picture{" "}
+            Change Quote{" "}
           </motion.h4>
 
           <div className="grid lg:px-36 gap-x-2 gap-y-4 ">
@@ -87,10 +69,10 @@ let res;
               initial="hidden"
               animate="visible"
               minLength={3}
-              placeholder="image"
+              placeholder="Quote"
               required
-              ref={image}
-              name="image"
+              ref={Quote}
+              name="Quote"
               autoComplete="none"
               className="rounded-lg py-2 sm:col-span-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
             />
@@ -102,7 +84,7 @@ let res;
               animate="visible"
               whileHover="hover"
             >
-              {!upload ? "Change Pic" : "Upload pic"}
+             Change Quote
             </motion.button>
           </div>
         </div>
@@ -111,4 +93,4 @@ let res;
   );
 };
 
-export default ChangePic;
+export default ChangeQuote;

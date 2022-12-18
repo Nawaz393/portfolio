@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef} from "react";
 import { motion } from "framer-motion";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
@@ -17,6 +17,9 @@ const AddSkills = () => {
       const image3 = useRef();
    
     
+
+
+
       const AddSkill = async(e) => {
         e.preventDefault();
      
@@ -53,7 +56,7 @@ const AddSkills = () => {
           setshow(true);
 
         }
-      
+      e.target.reset();
        
       };
       return (

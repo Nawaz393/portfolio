@@ -1,28 +1,118 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import Sidebar from './Sidebar';
 import { Card } from 'react-bootstrap';
+import axios from 'axios';
+import {motion} from "framer-motion"
+
+const nameAnime = {
+    hidden: {
+      x: "-100vw",
+    },
+    visible: {
+      x: 0,
+      transition: {
+        delay: 0.5,
+        duration: 2,
+      },
+    },
+  
+    hover: {
+      scale: [null, 1.2, 1.06],
+  
+      transition: {
+        delay: 0.1,
+        duration: 2,
+      },
+    },
+  };
+  
+  
+  const CardAnime = {
+    hidden: {
+      y: "100vw",
+    },
+    visible: {
+      y: 0,
+      transition: {
+        delay: 0.7,
+        duration: 2,
+      },
+    },
+    hover: {
+      scale: [null, 1.2, 1.1],
+  
+      transition: {
+        duration: 1.2,
+      },
+    },
+  };
+  
+  const exitAnime = {
+    exit: {
+      y: "-100vh",
+      transition: {
+        duration: 1,
+        ease: "easeInOut",
+      },
+    },
+  };
 const AdminDashBoard = () => {
 
-const data=[{name:"totaluser",num:"12"},
-{name:"totaluser",num:"12"}
+const [count,setcount]= useState([]);
+
+useEffect(()=>{
+
+(async()=>{
+
+
+const res=await axios.get("/admin");
+
+setcount(res.data)
+
+}
+)();
+
+},[])
+
+
+
+
+const data=[{name:"Users"},
+{name:"Skills"}
 ]
 
-const cards=data.map(item=>{
+console.log(count)
+const cards=data.map((item,index)=>{
 
 
     return(
-        <Card>
+        <motion.div
+        
+        variants={CardAnime}
+        initial="hidden"
+        animate="visible"
+        whileHover="hover"
+        >
+        <Card key={index} 
+       
+        
+        >
         <Card.Body>
         <Card.Title>{item.name}</Card.Title>
-        <Card.Subtitle>{item.num}</Card.Subtitle>
+        <Card.Subtitle>{count[index]?.Count}</Card.Subtitle>
         </Card.Body>
                 </Card>
+                </motion.div>
 
     )
 })
 
     return (
-        <div className=" flex flex-row items-start text-center">
+        <motion.div className=" flex flex-row items-start text-center"
+        
+        variants={exitAnime}
+        exit="exit"
+        >
 
             <div>
 
@@ -32,7 +122,12 @@ const cards=data.map(item=>{
                 
             <div className=' mt-20  text-center py-1 px-14  lg:ml-48'>
 
-                <h1 className='text-slate-400 font-Nerko font-semibold '>welcome to admin Dashboard</h1>
+                <motion.h1 className='text-slate-400 font-Nerko font-semibold '
+                variants={nameAnime}
+                initial="hidden"
+                animate="visible"
+                whileHover="hover"
+                >welcome to admin Dashboard</motion.h1>
 
                 <main className='grid md:grid-cols-2  py-3  gap-x-3 gap-y-3  '>
                  
@@ -43,7 +138,7 @@ const cards=data.map(item=>{
 
 
           
-        </div>
+        </motion.div>
     );
 }
 
