@@ -32,10 +32,14 @@ const Sidebar = () => {
   const [toggle, settoggle] = useState(false);
 
   const item = [
+    { page: "Home", link: "/AdminDashboard" },
     { page: "ChangePic", link: "/ChangePic" },
     { page: "Add Skills", link: "/AddSkill" },
     { page: "Add Quote", link: "/ChangeQuote" },
     { page: "New User", link: "/RegisterUser" },
+    {page:"Change Skills",link:"/updateDeleteSkill"},
+    {page:"Change about",link:"/ChangeAboutMe"},
+   
   ];
 
   const sidebsritem = item.map((item) => {
@@ -71,7 +75,8 @@ const Sidebar = () => {
           settoggle(!toggle);
         }}
       >
-        <FontAwesomeIcon icon={faBars} size="lg" color="white" />
+        <FontAwesomeIcon icon={faBars} color="#fff" size="xl"
+         />
       </button>
       <ul
         className={

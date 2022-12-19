@@ -16,6 +16,8 @@ import UserReg from './UserReg';
 import AddSkills  from './AddSkills';
 import ChangePic from './ChangePic';
 import ChangeQuote from './ChangeQuote';
+import ChangeAboutMe from './ChangeAboutMe';
+import UpdDelSkill from './UpdDelSkill';
 function App() {
   const location =useLocation();
   return (
@@ -36,8 +38,9 @@ function App() {
 <Route path='/RegisterUser' element={<UserReg/>}></Route>
 <Route path='/AddSkill' element={<AddSkills/>}></Route>
 <Route path='/ChangePic' element={<ChangePic/>}></Route>
-
+<Route path='/ChangeAboutMe' element={<ChangeAboutMe/>}></Route>
 <Route path='/ChangeQuote' element={<ChangeQuote/>}> </Route>
+<Route path='/UpdateDeleteSkill' element={<UpdDelSkill/>}></Route>
 </Routes>
 </AnimatePresence>
 <Footer/>

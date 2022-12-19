@@ -1,5 +1,6 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
 const exitAnime = {
   exit: {
     y: "-100vh",
@@ -45,6 +46,30 @@ const right = {
   },
 };
 function Aboutme() {
+
+  const [aboutme, setaboutme] = useState("");
+
+  useEffect(() => {
+  
+  
+  (
+    async () => {
+      const res = await axios.get("/aboutme");
+      if (res.data.length > 0) {
+        setaboutme(res.data[0].text);
+      }
+
+      else{
+
+        setaboutme(res.data.message);
+      }
+    }
+  )();
+  
+  },[])
+
+
+
   return (
     <motion.div className="min-h-screen" variants={exitAnime} exit="exit">
       <div className="flex flex-col mt-28">
@@ -63,17 +88,7 @@ function Aboutme() {
           initial="hidden"
           animate="visible"
         >
-          I am a student of software engineering, currently enrolled in a
-          four-year degree program. I am passionate about technology and have
-          been since I was a young child. I have always had a strong interest in
-          computer programming and software design, and I am determined to
-          pursue a career in the field. I have a strong work ethic, and I am
-          dedicated to learning new skills and techniques in order to stay
-          up-to-date with the latest advances in software engineering. I have a
-          keen eye for detail and take great pride in the quality of my work. I
-          am an excellent problem solver, able to think critically and logically
-          to solve difficult challenges. I am confident that I have the
-          knowledge and skills to succeed.
+          {aboutme}
         </motion.p>
       </div>
     </motion.div>
