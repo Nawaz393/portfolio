@@ -75,4 +75,23 @@ const exitAnime = {
   },
 };
 
-export { left, right, exitAnime, bottom, top };
+const imgAnime = {
+  hidden: {
+    y: "100vw",
+  },
+  visible: {
+    y: 0,
+    transition: {
+      delay: 0.7,
+      duration: 2,
+    },
+  },
+  hover: {
+    scale: [null, 1.2, 1.1],
+
+    transition: {
+      duration: 1.2,
+    },
+  },
+};
+export { left, right, exitAnime, bottom, top,imgAnime };

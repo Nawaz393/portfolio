@@ -116,7 +116,7 @@ setQuote(res2.data[0].Quote);
           whileHover="hover"
         />
         <motion.h5
-          className="text-white  md:text-lg  text-sm tracking-tighter font-Nunito mt-5 "
+          className="text-white px-3 md:text-lg  text-sm tracking-tighter font-Nunito mt-5 "
           variants={paraAnime}
           initial="hidden"
           animate="visible"

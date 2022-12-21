@@ -87,31 +87,13 @@ const exitAnime={
 }
 
 function Form() {
-  // const [data, setdata] = React.useState({
-  //   name: "",
-  //   email: "",
-  //   desc: "",
-  // });
-
-  //   const handelchange=(event)=>{
-  //    const {name,value}=event.target;
-
-  // setdata(
-
-  //     olddata=>{
-  //         return{...olddata,[name]:value}
-  //     }
-  // )
-
-  //   }
-
   const [suceess, setsuccess] = React.useState(false);
   const [show, setshow] = React.useState(false);
 
   const form = React.useRef();
 
   const sendEmail = (e) => {
-    
+
     e.preventDefault();
 
     emailjs
@@ -171,6 +153,7 @@ function Form() {
               initial="hidden"
               animate="visible"
               minLength={"5"}
+              required
               placeholder="Name"
               name="name"
               autoComplete="none"
@@ -184,6 +167,7 @@ function Form() {
               placeholder="Email"
               type={"email"}
               name="email"
+              required
               autoComplete="none"
               className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
             />
@@ -194,6 +178,7 @@ function Form() {
               minLength={"10"}
               placeholder="Description"
               name="desc" 
+              required
               autoComplete="none"
               className="rounded-lg py-2 px-3 hover:bg-gray-100 focus:outline-blue-300 shadow-lg border-none  sm:col-span-2 "
             />

@@ -78,9 +78,10 @@ const UpdDelSkill = () => {
       const res = await axios.get("/skills");
       setSkills(res.data);
     })();
-  }, [Delete]);
+  }, [Delete,show]);
 
   const handelchange = (e) => {
+  
     setFormval({ ...formval, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
@@ -109,7 +110,7 @@ const UpdDelSkill = () => {
   const clickDelete =  async(id) => {
 
 const data={id:id};
-console.log(data);
+
   const res = await axios.delete("/skills",{data} );
  setDelete(!Delete);
 }
@@ -226,9 +227,18 @@ console.log(data);
                       minLength={3}
                       placeholder="Name"
                       required
-                      onChange={(e) => {handelchange(e)}}
+                      type={"text"}
+                      onChange={(e) => {handelchange(e)
+                      
+                    
+                        
+                      }
+                    
+               
+                    
+                    }
                       value={formval.name}
-                      name="Name"
+                      name="name"
                       autoComplete="none"
                       className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                     />

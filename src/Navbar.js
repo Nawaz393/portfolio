@@ -51,8 +51,10 @@ export default function Navbar() {
   const navItems = [
     { page: "Home", link: "/" },
     { page: "Skills", link: "skills" },
+    { page: "Projects", link: "Projects" },
     { page: "Contact Me", link: "contact" },
     { page: "About Me", link: "About" },
+
   ];
 
   const nav_bar = navItems.map((item) => {

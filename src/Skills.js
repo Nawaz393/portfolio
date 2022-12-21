@@ -115,7 +115,7 @@ function Skills() {
   React.useEffect(() => {
     (async () => {
       const res = await axios.get("/skills");
-      console.log(res.data);
+   
       const data = res.data;
 
       setAllSkills(data);
