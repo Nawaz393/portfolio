@@ -1,38 +1,38 @@
 import React from "react";
 import {imgAnime, exitAnime, bottom, top} from './Anime'
-import picture from "../src/pics/myimg.JPG";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card } from "react-bootstrap";
 import {faLink} from '@fortawesome/free-solid-svg-icons';
 import {motion} from 'framer-motion';
 const arr = [
   {
-    pic: picture,
+    pic: "picture",
     name: "hello",
     desc: "ghjkl;lkjhgfghjkl;lkjhgfghjklkj",
     link: "fghjkl;lkj",
   },
   {
-    pic: picture,
+    pic: "picture",
     name: "hello",
     link: "fghjkl;lkj",
     desc: "ghjkl;lkjhgfghjkl;lkjhgfghjklkj",
   },
   {
-    pic: picture,
+    pic: "picture",
     name: "hello",
     link: "fghjkl;lkj",
     desc: "ghjkl;lkjhgfghjkl;lkjhgfghjklkj",
   },
   {
-    pic: picture,
+    pic: "picture",
     name: "hello",
     link: "fghjkl;lkj",
     desc: "ghjkl;lkjhgfghjkl;lkjhgfghjklkj",
   },
 ];
 
-const AddProject = () => {
+const Project = () => {
   return (
     <motion.div className="min-h-screen"
     variants={exitAnime}
@@ -84,4 +84,4 @@ const AddProject = () => {
   );
 };
 
-export default AddProject;
+export default Project;

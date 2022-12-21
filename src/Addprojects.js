@@ -4,36 +4,36 @@ import { Alert } from "react-bootstrap";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 import { left,right,bottom,top,exitAnime } from "./Anime";
-const AddSkills = () => {
+const Addprojects = () => {
    
     
       const [suceess, setsuccess] = useState(false);
       const [show, setshow] = useState(false);
       const [data, setdata] = useState({});
-      const Name = useRef();
-      const image1 = useRef();
-      const image2 = useRef();
-      const image3 = useRef();
+      const name = useRef();
+      const image = useRef();
+      const link = useRef();
+      const detail = useRef();
    
     
 
 
 
-      const AddSkill = async(e) => {
+      const AddProject = async(e) => {
         e.preventDefault();
      
-        const skilldata = {
-          name: Name.current.value,
-          image1:image1.current.value,
-          image2: image2.current.value,
-          image3:image3.current.value,
+        const projectdata = {
+          name: name.current.value,
+          image:image.current.value,
+          link: link.current.value,
+          detail:detail.current.value,
           
         };
     
-        console.log(skilldata);
+       
         try {
           
-          const res = await axios.post("/skills",  skilldata );
+          const res = await axios.post("/project",  projectdata );
         
           console.log(res.data);
           if (res.data.success) {
@@ -66,7 +66,7 @@ const AddSkills = () => {
     
     <Sidebar/>
     
-          <form onSubmit={AddSkill} className=" w-10/12  ml-2">
+          <form onSubmit={AddProject} className=" w-10/12  ml-2">
             <div className="my-32 px-20">
               <motion.h4
                 className="text-gray-400 text-center capitalize pb-3  font-Nerko"
@@ -75,7 +75,7 @@ const AddSkills = () => {
                 animate="visible"
                 whileHover="hover"
               >
-                Register User{" "}
+                Add New Project{" "}
               </motion.h4>
     
               <div className="grid lg:px-36 gap-x-2 gap-y-4 ">
@@ -100,8 +100,8 @@ const AddSkills = () => {
                   minLength={3}
                   placeholder="Name"
                    required
-                  ref={Name}
-                  name="Name"
+                  ref={name}
+                  name="name"
                   autoComplete="none"
                   className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                 />
@@ -109,39 +109,39 @@ const AddSkills = () => {
                 <motion.input
                   variants={right}
                   initial="hidden"
-                  ref={image1}
+                  ref={image}
                   required
                   minLength={10}
                   animate="visible"
-                  placeholder="image1"
+                  placeholder="image"
                   type={"text"}
-                  name="image1"
+                  name="image"
                   autoComplete="none"
                   className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                 />
                 <motion.input
                   variants={left}
                   initial="hidden"
-                  ref={image2}
+                  ref={link}
                   animate="visible"
                   required
                   minLength={10}
-                  placeholder="image2"
+                  placeholder="link"
                   type={"text"}
-                  name="image2"
+                  name="link"
                   autoComplete="none"
                   className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                 />
                  <motion.input
                   variants={left}
                   initial="hidden"
-                  ref={image3}
+                  ref={detail}
                   minLength={10}
                   required
                   animate="visible"
-                  placeholder="image3"
+                  placeholder="detail"
                   type={"text"}
-                  name="image3"
+                  name="detail"
                   autoComplete="none"
                   className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                 />
@@ -153,7 +153,7 @@ const AddSkills = () => {
                   animate="visible"
                   whileHover="hover"
                 >
-                  AddSkill
+                  Add project
                 </motion.button>
               </div>
             </div>
@@ -162,4 +162,4 @@ const AddSkills = () => {
       );
 }
 
-export default AddSkills;
+export default Addprojects;
