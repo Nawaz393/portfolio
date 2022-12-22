@@ -1,41 +1,68 @@
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useAuth from "./hooks/useAuth";
 
 import { left,right,top,bottom,exitAnime } from "./Anime";
 function LoginForm() {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
   const [data,setdata]=useState("")
-  const UserName = useRef();
+  const userName = useRef();
   const password = useRef();
+  const navigate=useNavigate();
+  const {setAuth}=useAuth();
 
   const Login = async(e) => {
     e.preventDefault();
 
 
    const logindata={
-UserName:UserName.current.value,
+userName:userName.current.value,
 password:password.current.value,
 
    }
+
+
+   
   try {
-    const res= await axios.post("http://localhost:5001/login", logindata);
+    const res= await axios.post("/login", logindata);
     if(!res.data.success){
 
       setsuccess(false);
       setdata(res.data.message);
       setshow(true);
+
+      
   }
   else{
-    setsuccess(false);
-    setdata(res.data.message);
-    setshow(true);
+  
+    const {user,token}=res?.data;
+    const {name,role}=user;
+    setAuth({name,role,token});
+   navigate("/adminDashboard",{replace:true});
 
   }
   } catch (error) {
     
+    if(error.response?.status===404){
+      setsuccess(false);
+      setdata("page not found please try again later");
+      setshow(true);
+    }
+    else if(error.response?.status===500){
+      setsuccess(false);
+      setdata("server error please try again later");
+      setshow(true);
+    }
+
+    else{
+      setsuccess(false);
+      setdata(error);
+      setshow(true);
+    }
   }
  
 
@@ -89,8 +116,8 @@ password:password.current.value,
               required
               minLength={5}
               placeholder="Username"
-              ref={UserName}
-              name="UserName"
+              ref={userName}
+              name="userName"
               autoComplete="none"
               className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
             />

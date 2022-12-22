@@ -10,7 +10,7 @@ const image1 = {
     transition: {
       ease: "linear",
 
-      yoyo: Infinity,
+      repeat: Infinity,
       delay: 1,
       duration: 10,
     },
@@ -23,7 +23,7 @@ const image2 = {
     transition: {
       ease: "linear",
 
-      yoyo: Infinity,
+      repeat: Infinity,
       delay: 11,
       duration: 10,
     },
@@ -36,7 +36,7 @@ const image3 = {
     transition: {
       ease: "linear",
 
-      yoyo: Infinity,
+      repeat: Infinity,
       delay: 13,
       duration: 10,
     },
@@ -111,7 +111,7 @@ const imagesAnime = {
 
 function Skills() {
   const [allskills, setAllSkills] = React.useState();
-  const [data, setdata] = React.useState();
+  
   React.useEffect(() => {
     (async () => {
       const res = await axios.get("/skills");

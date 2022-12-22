@@ -37,6 +37,8 @@ const Sidebar = () => {
     { page: "Add Quote", link: "/ChangeQuote" },
     { page: "New User", link: "/RegisterUser" },
     {page:"Change Skills",link:"/updateDeleteSkill"},
+    {page:'Add Project',link:'/AddProject'},
+    {page:'Change Project',link:'/UpdateDeleteProject'},
     {page:"Change about",link:"/ChangeAboutMe"},
    
   ];

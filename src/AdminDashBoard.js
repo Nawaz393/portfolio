@@ -3,7 +3,7 @@ import Sidebar from './Sidebar';
 import { Card } from 'react-bootstrap';
 import axios from 'axios';
 import {motion} from "framer-motion"
-
+import useAuth from './hooks/useAuth';
 const nameAnime = {
     hidden: {
       x: "-100vw",
@@ -59,7 +59,7 @@ const nameAnime = {
 const AdminDashBoard = () => {
 
 const [count,setcount]= useState([]);
-
+const {auth}=useAuth();
 useEffect(()=>{
 
 (async()=>{
@@ -76,12 +76,10 @@ setcount(res.data)
 
 
 
-
 const data=[{name:"Users"},
 {name:"Skills"}
 ]
 
-console.log(count)
 const cards=data.map((item,index)=>{
 
 
@@ -92,6 +90,7 @@ const cards=data.map((item,index)=>{
         initial="hidden"
         animate="visible"
         whileHover="hover"
+        key={index}
         >
         <Card key={index} 
        
@@ -122,13 +121,13 @@ const cards=data.map((item,index)=>{
                 
             <div className=' mt-20  text-center py-1 px-14  lg:ml-48'>
 
-                <motion.h1 className='text-slate-400 font-Nerko font-semibold '
+                <motion.h1 className='text-slate-400  font-Nerko font-semibold w-full text-center'
                 variants={nameAnime}
                 initial="hidden"
                 animate="visible"
                 whileHover="hover"
-                >welcome to admin Dashboard</motion.h1>
-
+                >welcome To the Admin Dashboard  </motion.h1>
+<motion.h5 className='text-white font-Nunito font-bold '>{auth?.name}</motion.h5>
                 <main className='grid md:grid-cols-2  py-3  gap-x-3 gap-y-3  '>
                  
                

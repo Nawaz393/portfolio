@@ -20,6 +20,9 @@ import ChangeAboutMe from './ChangeAboutMe';
 import UpdDelSkill from './UpdDelSkill';
 import Addprojects from './Addprojects';
 import Project from "./Project"
+import RequireAuth from './RequireAuth';
+import UpdDelProjects from './UpdDelProjects';
+import NotRoute from './NotRoute';
 function App() {
   const location =useLocation();
   return (
@@ -36,7 +39,7 @@ function App() {
 <Route path='/About' element={<Aboutme/>}/>
 <Route path='/Projects' element={<Project/>}></Route>
 <Route path='/admin' element={<LoginForm/>}/>
-
+<Route element={<RequireAuth/>}>
 <Route path='/AdminDashboard' element={<AdminDashBoard/>}></Route>
 <Route path='/RegisterUser' element={<UserReg/>}></Route>
 <Route path='/AddSkill' element={<AddSkills/>}></Route>
@@ -45,6 +48,11 @@ function App() {
 <Route path='/ChangeQuote' element={<ChangeQuote/>}> </Route>
 <Route path='/UpdateDeleteSkill' element={<UpdDelSkill/>}></Route>
 <Route path='/Addproject' element={<Addprojects/>}></Route>
+<Route path='updateDeleteProject' element={<UpdDelProjects/>}></Route>
+</Route>
+
+
+<Route path='*' element={<NotRoute/>}></Route>
 </Routes>
 </AnimatePresence>
 <Footer/>
