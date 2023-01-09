@@ -4,11 +4,13 @@ import { Alert } from "react-bootstrap";
 import axios from "axios";
 import { Card } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import { left, right, bottom, top } from "./Anime";
-import useAuth from "./hooks/useAuth";
-import CAlert from "./components/Alert";
-const nameAnime={
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import CAlert from "../components/Alert";
+
+const nameAnime = {
   hidden: {
     x: "-100vw",
   },
@@ -22,6 +24,7 @@ const nameAnime={
 
   hover: {
     scale: [null, 1.1, 1.06],
+
     transition: {
       delay: 0.1,
       duration: 2,
@@ -48,7 +51,6 @@ const CardAnime = {
     },
   },
 };
-
 const exitAnime = {
   exit: {
     y: "-100vh",
@@ -58,7 +60,7 @@ const exitAnime = {
     },
   },
 };
-const UpdDelProjects = () => {
+const UpdDelSkill = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
   const [data, setdata] = useState({});
@@ -66,38 +68,31 @@ const UpdDelProjects = () => {
   const [formval, setFormval] = useState({
     id: 0,
     name: "",
-    image: "",
-    link: "",
-    detail: "",
+    image1: "",
+    image2: "",
+    image3: "",
   });
   const { state } = useAuth();
-  const [project, setProjects] = useState([]);
+  const [skills, setSkills] = useState([]);
   const [update, setupdate] = useState(false);
-  const [unauth,setUnauth]=useState(false);
-
+  const [unauth, setUnauth] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
-if(state?.role?.toLowerCase()!=="admin"){
-  setUnauth(true);
-}
-  else{
-
-    setUnauth(false);
-  }
-
-
+    if (state?.role?.toLowerCase() !== "admin") {
+      setUnauth(true);
+    } else {
+      setUnauth(false);
+    }
     (async () => {
-      try {
-        const res = await axios.get("/project", {
-          headers: {
-            "Authorization": `Bearer ${state.token}`,
-          },
-        });
-        setProjects(res.data);
-      } catch (error) {
-        console.log(error);
-      }
+      const res = await axios.get("/skills", {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
+
+      setSkills(res.data);
     })();
-  }, [Delete, show,state]);
+  }, [Delete, show, state]);
 
   const handelchange = (e) => {
     setFormval({ ...formval, [e.target.name]: e.target.value });
@@ -105,13 +100,14 @@ if(state?.role?.toLowerCase()!=="admin"){
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await axios.put("/project", formval, {
-     
+    const res = await axios.put("/skills", formval, {
       headers: {
-        "Authorization": `Bearer ${state.token}`,
+        Authorization: `Bearer ${state.token}`,
       },
     });
-
+    if (res.status === 401) {
+      navigate("/unauthorized");
+    }
     if (res.data.success) {
       setshow(true);
       setsuccess(true);
@@ -126,31 +122,29 @@ if(state?.role?.toLowerCase()!=="admin"){
   };
 
   const clickupdate = (id) => {
-    const pr = project.find((item) => item.id === id);
-    setFormval(pr);
+    const skill = skills.find((item) => item.id === id);
+    setFormval(skill);
   };
 
   const clickDelete = async (id) => {
     const data = { id: id };
-    console.log(state.token)
 
     const res = await axios.delete(
-      "/project",
-     
+      "/skills",
+
       {
-        data,
+        data: data,
         headers: {
-          "Authorization": `Bearer ${state.token}`,
+          Authorization: `Bearer ${state.token}`,
         },
       }
     );
-    if (!res.data.success) {
-      alert(res.data.message);
+    if (res.status === 401) {
+      navigate("/unauthorized");
     }
     setDelete(!Delete);
   };
- 
-  const cards = project?.map((item, index) => {
+  const cards = skills?.map((item, index) => {
     return (
       <motion.div
         variants={CardAnime}
@@ -158,14 +152,14 @@ if(state?.role?.toLowerCase()!=="admin"){
         animate="visible"
         whileHover="hover"
         key={index}
-        className=" w-1/3  sm:w-3/4   "
+        className=" lg:w-4/5 md:w-3/5 w-2/5 "
       >
         <Card bg="dark" text="light">
           <Card.Header as="h5">{item.name}</Card.Header>
           <Card.Body>
-            <Card.Text>{item.image}</Card.Text>
-            <Card.Text>{item.link}</Card.Text>
-            <Card.Text>{item.detail}</Card.Text>
+            <Card.Text>{item.image1}</Card.Text>
+            <Card.Text>{item.image1}</Card.Text>
+            <Card.Text>{item.image1}</Card.Text>
 
             <div className="my-3 ">
               <span className="sm:mx-5 p-2">
@@ -183,8 +177,11 @@ if(state?.role?.toLowerCase()!=="admin"){
               </span>
 
               <span className="sm:mx-5 p-2">
-                <Button variant="danger" onClick={() => clickDelete(item.id)}
-                disabled={unauth}>
+                <Button
+                  variant="danger"
+                  onClick={() => clickDelete(item.id)}
+                  disabled={unauth}
+                >
                   Delete
                 </Button>
               </span>
@@ -213,13 +210,19 @@ if(state?.role?.toLowerCase()!=="admin"){
           animate="visible"
           whileHover="hover"
         >
-          Update and Delete Projects
+          Update and Delete Skills
         </motion.h1>
-        <main className=" ">
-        { unauth &&  <CAlert variant="danger"  heading="Unauthorized"  text="You are authorized to update or delete projects"  />}
 
+        <main className=" w-full">
+          {unauth && (
+            <CAlert
+              variant="danger"
+              heading="Unauthorized"
+              text="You are authorized to update or delete skills"
+            />
+          )}
           {!update ? (
-            <div className="grid grid-col-1  py-3 text-sm  gap-y-3  ">
+            <div className="grid grid-col-1   py-3 text-sm  gap-y-3 -ml-8 sm:ml-24 md:-ml-0">
               {cards}
             </div>
           ) : (
@@ -237,8 +240,9 @@ if(state?.role?.toLowerCase()!=="admin"){
                     animate="visible"
                     whileHover="hover"
                   >
-                    Update project{" "}
+                    Update Skill{" "}
                   </motion.h4>
+
                   <div className="grid lg:px-36 gap-x-2 gap-y-4 ">
                     <div className="sm:col-span-2">
                       {show && (
@@ -262,14 +266,14 @@ if(state?.role?.toLowerCase()!=="admin"){
                       initial="hidden"
                       animate="visible"
                       minLength={3}
-                      placeholder="name"
-                      name="name"
+                      placeholder="Name"
                       required
                       type={"text"}
                       onChange={(e) => {
                         handelchange(e);
                       }}
                       value={formval.name}
+                      name="name"
                       autoComplete="none"
                       className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                     />
@@ -277,48 +281,48 @@ if(state?.role?.toLowerCase()!=="admin"){
                     <motion.input
                       variants={right}
                       initial="hidden"
-                      value={formval.image}
+                      value={formval.image1}
                       required
                       onChange={(e) => {
                         handelchange(e);
                       }}
                       minLength={10}
                       animate="visible"
-                      placeholder="image"
+                      placeholder="image1"
                       type={"text"}
-                      name="image"
+                      name="image1"
                       autoComplete="none"
                       className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                     />
                     <motion.input
                       variants={left}
                       initial="hidden"
-                      value={formval.link}
+                      value={formval.image2}
                       animate="visible"
                       required
                       onChange={(e) => {
                         handelchange(e);
                       }}
                       minLength={10}
-                      placeholder="link"
+                      placeholder="image2"
                       type={"text"}
-                      name="link"
+                      name="image2"
                       autoComplete="none"
                       className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                     />
                     <motion.input
                       variants={left}
                       initial="hidden"
-                      value={formval.detail}
+                      value={formval.image3}
                       minLength={10}
                       onChange={(e) => {
                         handelchange(e);
                       }}
                       required
                       animate="visible"
-                      placeholder="detail"
+                      placeholder="image3"
                       type={"text"}
-                      name="detail"
+                      name="image3"
                       autoComplete="none"
                       className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                     />
@@ -343,4 +347,4 @@ if(state?.role?.toLowerCase()!=="admin"){
   );
 };
 
-export default UpdDelProjects;
+export default UpdDelSkill;

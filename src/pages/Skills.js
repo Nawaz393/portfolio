@@ -2,7 +2,7 @@ import React from "react";
 
 import { motion } from "framer-motion";
 import axios from "axios";
-import useAuth from "./hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 const image1 = {
   visible: {
     rotateY: 360,

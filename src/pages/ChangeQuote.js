@@ -3,48 +3,27 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { Alert } from "react-bootstrap";
-import Sidebar from "./components/Sidebar";
-import useAuth from "./hooks/useAuth";
-const ChangeAboutMe = () => {
+import Sidebar from "../components/Sidebar";
+import useAuth from "../hooks/useAuth";
+const ChangeQuote = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
-  const [data, setdata] = useState("");
-  const [update, setupdate] = useState(false);
-  const about = useRef();
+  const [data, setdata] = useState({});
+  const Quote = useRef();
   const { state } = useAuth();
-
-  useEffect(() => {
-    (async () => {
-      const res = await axios.get("/aboutme",{headers:{
-
-        "Authorization":`Bearer ${state.token}`
-      }});
-
-      if (res.data.length > 0) {
-        setupdate(true);
-      }
-    })();
-  }, []);
-
-  const ChangeAboutMe = async (e) => {
+  const ChangeQuote = async (e) => {
     e.preventDefault();
 
-    const aboutmedata = {
-      text: about.current.value,
+    const quotedata = {
+      Quote: Quote.current.value,
     };
 
-    let res;
-    if (update) {
-      res = await axios.put("/aboutme", aboutmedata,{headers:{
-
-        "Authorization":`Bearer ${state.token}`
-      }});
-    } else {
-      res = await axios.post("/aboutme", aboutmedata,{headers:{
-
-        "Authorization":`Bearer ${state.token}`
-      }});
-    }
+    const res = await axios.put("/Quote", quotedata, {
+      headers: {
+        Authorization: `Bearer ${state.token}`,
+      },
+    });
+    console.log(res.data);
     if (!res.data.success) {
       setsuccess(false);
       setdata(res.data.message);
@@ -60,7 +39,7 @@ const ChangeAboutMe = () => {
     <motion.div className="min-h-screen flex " variants={exitAnime} exit="exit">
       <Sidebar />
 
-      <form onSubmit={ChangeAboutMe} className=" w-10/12  ml-2">
+      <form onSubmit={ChangeQuote} className=" w-10/12  ml-2">
         <div className="my-32 px-20">
           <motion.h4
             className="text-gray-400 text-center capitalize pb-3  font-Nerko"
@@ -69,7 +48,7 @@ const ChangeAboutMe = () => {
             animate="visible"
             whileHover="hover"
           >
-            {update ? "Update AboutMe" : "Add AboutMe"}
+            Change Quote{" "}
           </motion.h4>
 
           <div className="grid lg:px-36 gap-x-2 gap-y-4 ">
@@ -87,15 +66,15 @@ const ChangeAboutMe = () => {
                 </Alert>
               )}
             </div>
-            <motion.textarea
+            <motion.input
               variants={left}
               initial="hidden"
               animate="visible"
-              minLength={50}
-              placeholder="about"
+              minLength={3}
+              placeholder="Quote"
               required
-              ref={about}
-              name="about"
+              ref={Quote}
+              name="Quote"
               autoComplete="none"
               className="rounded-lg py-2 sm:col-span-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
             />
@@ -107,7 +86,7 @@ const ChangeAboutMe = () => {
               animate="visible"
               whileHover="hover"
             >
-              {!update ? "Add AboutMe" : "Update AboutMe"}
+              Change Quote
             </motion.button>
           </div>
         </div>
@@ -116,4 +95,4 @@ const ChangeAboutMe = () => {
   );
 };
 
-export default ChangeAboutMe;
+export default ChangeQuote;

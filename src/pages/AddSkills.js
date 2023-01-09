@@ -2,9 +2,9 @@ import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import { left, right, bottom, top, exitAnime } from "./Anime";
-import useAuth from "./hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 const AddSkills = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
@@ -13,7 +13,7 @@ const AddSkills = () => {
   const image1 = useRef();
   const image2 = useRef();
   const image3 = useRef();
-  const{state}=useAuth()
+  const { state } = useAuth();
 
   const AddSkill = async (e) => {
     e.preventDefault();
@@ -27,10 +27,11 @@ const AddSkills = () => {
 
     console.log(skilldata);
     try {
-      const res = await axios.post("/skills",skilldata, {headers:{
-
-        "Authorization":`Bearer ${state.token}`
-      }});
+      const res = await axios.post("/skills", skilldata, {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
 
       console.log(res.data);
       if (res.data.success) {

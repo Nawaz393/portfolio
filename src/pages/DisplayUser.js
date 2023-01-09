@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { Card } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import Sidebar from "./components/Sidebar";
-import useAuth from "./hooks/useAuth";
-import getdata from "./hooks/getdata";
+import Sidebar from "../components/Sidebar";
+import useAuth from "../hooks/useAuth";
+import getdata from "../hooks/getdata";
 import {useNavigate} from "react-router-dom";
-import CAlert from "./components/Alert";
+import CAlert from "../components/Alert";
 const nameAnime = {
   hidden: {
     x: "-100vw",

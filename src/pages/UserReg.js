@@ -1,13 +1,12 @@
-import React, { useState, useRef ,useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
 
-import Sidebar from "./components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import { left, right, top, bottom, exitAnime } from "./Anime";
-import useAuth from "./hooks/useAuth";
-import CAlert from "./components/Alert";
-
+import useAuth from "../hooks/useAuth";
+import CAlert from "../components/Alert";
 
 const UserReg = () => {
   const [suceess, setsuccess] = useState(false);
@@ -17,19 +16,15 @@ const UserReg = () => {
   const password = useRef();
   const email = useRef();
   const role = useRef();
-  const [unauth,setUnauth]=useState(false)
-const {state}=useAuth();
-useEffect(() => {
- 
-  if(state.role.toLowerCase()!="admin"){
-    setUnauth(true);
-  }else{
-
-    setUnauth(false)
-  }
-
-
-}, [state]);
+  const [unauth, setUnauth] = useState(false);
+  const { state } = useAuth();
+  useEffect(() => {
+    if (state.role.toLowerCase() != "admin") {
+      setUnauth(true);
+    } else {
+      setUnauth(false);
+    }
+  }, [state]);
   const Register = async (e) => {
     e.preventDefault();
     const registerdata = {
@@ -39,9 +34,11 @@ useEffect(() => {
       role: role.current.value,
     };
     try {
-      const res = await axios.post("/register", registerdata,{headers:{
-        "Authorization":`Bearer ${state.token}`
-      }});
+      const res = await axios.post("/register", registerdata, {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
       if (!res.data.success) {
         setsuccess(false);
         setdata(res.data.message);
@@ -72,7 +69,13 @@ useEffect(() => {
           >
             Register User{" "}
           </motion.h4>
-          { unauth &&  <CAlert variant="danger"  heading="Unauthorized"  text="you will not be able to add user"  />}
+          {unauth && (
+            <CAlert
+              variant="danger"
+              heading="Unauthorized"
+              text="you will not be able to add user"
+            />
+          )}
 
           <div className="grid lg:px-36 gap-x-2 gap-y-4 ">
             <div className="sm:col-span-2">

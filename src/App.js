@@ -1,31 +1,31 @@
 
 import './App.css';
 import Navbar from './components/Navbar';
-import Name  from './Name';
+import Name  from './pages/Name';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Skills from './Skills';
-import  Form  from './Form';
-import Footer from './Footer';
+import Skills from './pages/Skills';
+import  Form  from './pages/Form';
+import Footer from './components/Footer';
 import {Routes,Route } from "react-router-dom";
-import Aboutme from './Aboutme';
-import LoginForm from './LoginForm';
+import Aboutme from './pages/Aboutme';
+import LoginForm from './pages/LoginForm';
 import {useLocation} from "react-router-dom";
 import {AnimatePresence} from "framer-motion";
-import AdminDashBoard from './AdminDashBoard';
-import UserReg from './UserReg';
-import AddSkills  from './AddSkills';
-import ChangePic from './ChangePic';
-import ChangeQuote from './ChangeQuote';
-import ChangeAboutMe from './ChangeAboutMe';
-import UpdDelSkill from './UpdDelSkill';
-import Addprojects from './Addprojects';
-import Project from "./Project"
-import RequireAuth from './RequireAuth';
-import DisplayUser from './DisplayUser';
-import UpdDelProjects from './UpdDelProjects';
-import NotRoute from './NotRoute';
-import ChangePassword from './changePassword';
-import NotAuthorized from './NotAuthorized';
+import AdminDashBoard from './pages/AdminDashBoard';
+import UserReg from './pages/UserReg';
+import AddSkills  from './pages/AddSkills';
+import ChangePic from './pages/ChangePic';
+import ChangeQuote from './pages/ChangeQuote';
+import ChangeAboutMe from './pages/ChangeAboutMe';
+import UpdDelSkill from './pages/UpdDelSkill';
+import Addprojects from './pages/Addprojects';
+import Project from "./pages/Project"
+import RequireAuth from './pages/RequireAuth';
+import DisplayUser from './pages/DisplayUser';
+import UpdDelProjects from './pages/UpdDelProjects';
+import NotRoute from './pages/NotRoute';
+import ChangePassword from './pages/changePassword';
+import NotAuthorized from './pages/NotAuthorized';
 function App() {
   const location =useLocation();
 

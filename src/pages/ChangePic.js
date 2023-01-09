@@ -3,8 +3,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { Alert } from "react-bootstrap";
-import Sidebar from "./components/Sidebar";
-import useAuth from "./hooks/useAuth";
+import Sidebar from "../components/Sidebar";
+import useAuth from "../hooks/useAuth";
 const ChangePic = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
@@ -21,9 +21,8 @@ const ChangePic = () => {
         },
       });
 
-
-      console.log(img.data)
-      if (img.data.length>0) {
+      console.log(img.data);
+      if (img.data.length > 0) {
         setUpload(false);
       } else {
         setUpload(true);
@@ -48,8 +47,7 @@ const ChangePic = () => {
         },
       });
     } else {
-      res = await axios.put("/myimage",imagedata,  {
-       
+      res = await axios.put("/myimage", imagedata, {
         headers: {
           Authorization: `Bearer ${state.token}`,
         },

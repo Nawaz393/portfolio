@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import { Card } from "react-bootstrap";
 import axios from "axios";
 import { motion } from "framer-motion";
-import useAuth from "./hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 const nameAnime = {
   hidden: {
     x: "-100vw",

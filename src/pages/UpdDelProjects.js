@@ -4,12 +4,10 @@ import { Alert } from "react-bootstrap";
 import axios from "axios";
 import { Card } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import { left, right, bottom, top } from "./Anime";
-import useAuth from "./hooks/useAuth";
-import { useNavigate } from "react-router-dom";
-import CAlert from "./components/Alert";
-
+import useAuth from "../hooks/useAuth";
+import CAlert from "../components/Alert";
 const nameAnime = {
   hidden: {
     x: "-100vw",
@@ -24,7 +22,6 @@ const nameAnime = {
 
   hover: {
     scale: [null, 1.1, 1.06],
-
     transition: {
       delay: 0.1,
       duration: 2,
@@ -51,6 +48,7 @@ const CardAnime = {
     },
   },
 };
+
 const exitAnime = {
   exit: {
     y: "-100vh",
@@ -60,7 +58,7 @@ const exitAnime = {
     },
   },
 };
-const UpdDelSkill = () => {
+const UpdDelProjects = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
   const [data, setdata] = useState({});
@@ -68,29 +66,33 @@ const UpdDelSkill = () => {
   const [formval, setFormval] = useState({
     id: 0,
     name: "",
-    image1: "",
-    image2: "",
-    image3: "",
+    image: "",
+    link: "",
+    detail: "",
   });
   const { state } = useAuth();
-  const [skills, setSkills] = useState([]);
+  const [project, setProjects] = useState([]);
   const [update, setupdate] = useState(false);
   const [unauth, setUnauth] = useState(false);
-  const navigate = useNavigate();
+
   useEffect(() => {
     if (state?.role?.toLowerCase() !== "admin") {
       setUnauth(true);
     } else {
       setUnauth(false);
     }
-    (async () => {
-      const res = await axios.get("/skills", {
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      });
 
-      setSkills(res.data);
+    (async () => {
+      try {
+        const res = await axios.get("/project", {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        });
+        setProjects(res.data);
+      } catch (error) {
+        console.log(error);
+      }
     })();
   }, [Delete, show, state]);
 
@@ -100,14 +102,12 @@ const UpdDelSkill = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await axios.put("/skills", formval, {
+    const res = await axios.put("/project", formval, {
       headers: {
         Authorization: `Bearer ${state.token}`,
       },
     });
-    if (res.status === 401) {
-      navigate("/unauthorized");
-    }
+
     if (res.data.success) {
       setshow(true);
       setsuccess(true);
@@ -122,29 +122,31 @@ const UpdDelSkill = () => {
   };
 
   const clickupdate = (id) => {
-    const skill = skills.find((item) => item.id === id);
-    setFormval(skill);
+    const pr = project.find((item) => item.id === id);
+    setFormval(pr);
   };
 
   const clickDelete = async (id) => {
     const data = { id: id };
+    console.log(state.token);
 
     const res = await axios.delete(
-      "/skills",
+      "/project",
 
       {
-        data: data,
+        data,
         headers: {
           Authorization: `Bearer ${state.token}`,
         },
       }
     );
-    if (res.status === 401) {
-      navigate("/unauthorized");
+    if (!res.data.success) {
+      alert(res.data.message);
     }
     setDelete(!Delete);
   };
-  const cards = skills?.map((item, index) => {
+
+  const cards = project?.map((item, index) => {
     return (
       <motion.div
         variants={CardAnime}
@@ -152,14 +154,14 @@ const UpdDelSkill = () => {
         animate="visible"
         whileHover="hover"
         key={index}
-        className=" lg:w-4/5 md:w-3/5 w-2/5 "
+        className=" w-1/3  sm:w-3/4   "
       >
         <Card bg="dark" text="light">
           <Card.Header as="h5">{item.name}</Card.Header>
           <Card.Body>
-            <Card.Text>{item.image1}</Card.Text>
-            <Card.Text>{item.image1}</Card.Text>
-            <Card.Text>{item.image1}</Card.Text>
+            <Card.Text>{item.image}</Card.Text>
+            <Card.Text>{item.link}</Card.Text>
+            <Card.Text>{item.detail}</Card.Text>
 
             <div className="my-3 ">
               <span className="sm:mx-5 p-2">
@@ -177,8 +179,10 @@ const UpdDelSkill = () => {
               </span>
 
               <span className="sm:mx-5 p-2">
-                <Button variant="danger" onClick={() => clickDelete(item.id)}
-                disabled={unauth}
+                <Button
+                  variant="danger"
+                  onClick={() => clickDelete(item.id)}
+                  disabled={unauth}
                 >
                   Delete
                 </Button>
@@ -208,19 +212,19 @@ const UpdDelSkill = () => {
           animate="visible"
           whileHover="hover"
         >
-          Update and Delete Skills
+          Update and Delete Projects
         </motion.h1>
-
-        <main className=" w-full">
+        <main className=" ">
           {unauth && (
             <CAlert
               variant="danger"
               heading="Unauthorized"
-              text="You are authorized to update or delete skills"
+              text="You are authorized to update or delete projects"
             />
           )}
+
           {!update ? (
-            <div className="grid grid-col-1   py-3 text-sm  gap-y-3 -ml-8 sm:ml-24 md:-ml-0">
+            <div className="grid grid-col-1  py-3 text-sm  gap-y-3  ">
               {cards}
             </div>
           ) : (
@@ -238,9 +242,8 @@ const UpdDelSkill = () => {
                     animate="visible"
                     whileHover="hover"
                   >
-                    Update Skill{" "}
+                    Update project{" "}
                   </motion.h4>
-
                   <div className="grid lg:px-36 gap-x-2 gap-y-4 ">
                     <div className="sm:col-span-2">
                       {show && (
@@ -264,14 +267,14 @@ const UpdDelSkill = () => {
                       initial="hidden"
                       animate="visible"
                       minLength={3}
-                      placeholder="Name"
+                      placeholder="name"
+                      name="name"
                       required
                       type={"text"}
                       onChange={(e) => {
                         handelchange(e);
                       }}
                       value={formval.name}
-                      name="name"
                       autoComplete="none"
                       className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                     />
@@ -279,48 +282,48 @@ const UpdDelSkill = () => {
                     <motion.input
                       variants={right}
                       initial="hidden"
-                      value={formval.image1}
+                      value={formval.image}
                       required
                       onChange={(e) => {
                         handelchange(e);
                       }}
                       minLength={10}
                       animate="visible"
-                      placeholder="image1"
+                      placeholder="image"
                       type={"text"}
-                      name="image1"
+                      name="image"
                       autoComplete="none"
                       className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                     />
                     <motion.input
                       variants={left}
                       initial="hidden"
-                      value={formval.image2}
+                      value={formval.link}
                       animate="visible"
                       required
                       onChange={(e) => {
                         handelchange(e);
                       }}
                       minLength={10}
-                      placeholder="image2"
+                      placeholder="link"
                       type={"text"}
-                      name="image2"
+                      name="link"
                       autoComplete="none"
                       className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                     />
                     <motion.input
                       variants={left}
                       initial="hidden"
-                      value={formval.image3}
+                      value={formval.detail}
                       minLength={10}
                       onChange={(e) => {
                         handelchange(e);
                       }}
                       required
                       animate="visible"
-                      placeholder="image3"
+                      placeholder="detail"
                       type={"text"}
-                      name="image3"
+                      name="detail"
                       autoComplete="none"
                       className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
                     />
@@ -345,4 +348,4 @@ const UpdDelSkill = () => {
   );
 };
 
-export default UpdDelSkill;
+export default UpdDelProjects;

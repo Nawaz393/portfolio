@@ -5,12 +5,12 @@ import { Card } from "react-bootstrap";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import axios from "axios";
-import useAuth from "./hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 const Project = () => {
   const [error, setError] = useState("");
   const [projects, setProjects] = useState([]);
-  const {state}=useAuth()
+  const { state } = useAuth();
 
   useEffect(() => {
     (async () => {
@@ -22,8 +22,6 @@ const Project = () => {
       }
     })();
   }, []);
-
-
 
   return error ? (
     <h4>{error}</h4>
@@ -54,15 +52,21 @@ const Project = () => {
               >
                 <Card bg="dark" text="light">
                   <Card.Header as="h3">{item.name}</Card.Header>
-                  <Card.Img variant="Top" 
-                 className="h-60 w-full object-cover"
-                  
-                  src={item.image} />
+                  <Card.Img
+                    variant="Top"
+                    className="h-60 w-full object-cover"
+                    src={item.image}
+                  />
 
                   <Card.Body>
                     <Card.Subtitle>
                       {" "}
-                      <a className="text-white " href={item.link}  target="_blank" rel="noreferrer"> 
+                      <a
+                        className="text-white "
+                        href={item.link}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         <FontAwesomeIcon
                           icon={faLink}
                           color={"white"}
