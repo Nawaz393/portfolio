@@ -2,7 +2,7 @@ import React from "react";
 
 import { motion } from "framer-motion";
 import axios from "axios";
-
+import useAuth from "./hooks/useAuth";
 const image1 = {
   visible: {
     rotateY: 360,
@@ -111,10 +111,12 @@ const imagesAnime = {
 
 function Skills() {
   const [allskills, setAllSkills] = React.useState();
-  
+  const {state}=useAuth();
   React.useEffect(() => {
     (async () => {
-      const res = await axios.get("/skills");
+      const res = await axios.get("/skills",{headers:{
+        "Authorization":`Bearer ${state.token}`
+      }});
    
       const data = res.data;
 

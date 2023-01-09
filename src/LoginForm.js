@@ -4,84 +4,60 @@ import { Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuth from "./hooks/useAuth";
-
-import { left,right,top,bottom,exitAnime } from "./Anime";
+import { left, right, top, bottom, exitAnime } from "./Anime";
 function LoginForm() {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
-  const [data,setdata]=useState("")
+  const [data, setdata] = useState("");
   const userName = useRef();
   const password = useRef();
-  const navigate=useNavigate();
-  const {setAuth}=useAuth();
+  const navigate = useNavigate();
 
-  const Login = async(e) => {
+  const { state,dispatch } = useAuth();
+
+  const Login = async (e) => {
     e.preventDefault();
 
+    const logindata = {
+      userName: userName.current.value,
+      password: password.current.value,
+    };
 
-   const logindata={
-userName:userName.current.value,
-password:password.current.value,
-
-   }
-
-
-   
-  try {
-    const res= await axios.post("/login", logindata);
-    if(!res.data.success){
-
-      setsuccess(false);
-      setdata(res.data.message);
-      setshow(true);
-
-      
-  }
-  else{
-  
-    const {user,token}=res?.data;
-    const {name,role}=user;
-    setAuth({name,role,token});
-   navigate("/adminDashboard",{replace:true});
-
-  }
-  } catch (error) {
-    
-    if(error.response?.status===404){
-      setsuccess(false);
-      setdata("page not found please try again later");
-      setshow(true);
+    try {
+      const res = await axios.post("/login",logindata, 
+      );
+      if (!res.data.success) {
+        setsuccess(false);
+        setdata(res.data.message);
+        setshow(true);
+      } else {
+        const { user, token } = res?.data;
+        const { name, role } = user;
+       
+        dispatch({type:"LOGIN",payload:{name,role,token}});
+        localStorage.setItem("user", JSON.stringify({ name, role, token }));
+      navigate("/adminDashboard", { replace: true });
+      }
+    } catch (error) {
+      if (error.response?.status === 404) {
+        setsuccess(false);
+        setdata("page not found please try again later");
+        setshow(true);
+      } else if (error.response?.status === 500) {
+        setsuccess(false);
+        setdata("server error please try again later");
+        setshow(true);
+      } else {
+        setsuccess(false);
+        setdata(error);
+        setshow(true);
+      }
     }
-    else if(error.response?.status===500){
-      setsuccess(false);
-      setdata("server error please try again later");
-      setshow(true);
-    }
-
-    else{
-      setsuccess(false);
-      setdata(error);
-      setshow(true);
-    }
-  }
- 
-
-
-
- 
-  
-
-   
-
-   
-    
-
   };
   return (
     <motion.div className="min-h-screen " variants={exitAnime} exit="exit">
-      <form  onSubmit={Login}>
+      <form onSubmit={Login}>
         <div className="my-32 px-20">
-        
           <motion.h4
             className="text-gray-400 text-center capitalize pb-3  font-Nerko"
             variants={top}
@@ -103,9 +79,7 @@ password:password.current.value,
                   <Alert.Heading>
                     {suceess ? "successfull" : "failed"}
                   </Alert.Heading>
-                  <p>
-                    {data}
-                  </p>
+                  <p>{data}</p>
                 </Alert>
               )}
             </div>
@@ -148,7 +122,6 @@ password:password.current.value,
           </div>
         </div>
       </form>
-      
     </motion.div>
   );
 }

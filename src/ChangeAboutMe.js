@@ -3,46 +3,47 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { Alert } from "react-bootstrap";
-import Sidebar from "./Sidebar";
+import Sidebar from "./components/Sidebar";
+import useAuth from "./hooks/useAuth";
 const ChangeAboutMe = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
-  const[data,setdata]=useState("");
-  const [update,setupdate]=useState(false);
-
+  const [data, setdata] = useState("");
+  const [update, setupdate] = useState(false);
   const about = useRef();
+  const { state } = useAuth();
 
   useEffect(() => {
-(async () => {
-    const res = await axios.get("/aboutme");
-   
-if(res.data.length>0){
-    setupdate(true);
-}
+    (async () => {
+      const res = await axios.get("/aboutme",{headers:{
 
+        "Authorization":`Bearer ${state.token}`
+      }});
 
+      if (res.data.length > 0) {
+        setupdate(true);
+      }
     })();
-
-
   }, []);
-
-
- 
 
   const ChangeAboutMe = async (e) => {
     e.preventDefault();
 
     const aboutmedata = {
-    text: about.current.value,
+      text: about.current.value,
     };
 
-
-    
     let res;
-    if(update){
-     res = await axios.put("/aboutme",aboutmedata);
-    }else{
-    res = await axios.post("/aboutme",aboutmedata);
+    if (update) {
+      res = await axios.put("/aboutme", aboutmedata,{headers:{
+
+        "Authorization":`Bearer ${state.token}`
+      }});
+    } else {
+      res = await axios.post("/aboutme", aboutmedata,{headers:{
+
+        "Authorization":`Bearer ${state.token}`
+      }});
     }
     if (!res.data.success) {
       setsuccess(false);
@@ -68,7 +69,7 @@ if(res.data.length>0){
             animate="visible"
             whileHover="hover"
           >
-           { update?"Update AboutMe":"Add AboutMe"}
+            {update ? "Update AboutMe" : "Add AboutMe"}
           </motion.h4>
 
           <div className="grid lg:px-36 gap-x-2 gap-y-4 ">
@@ -106,7 +107,7 @@ if(res.data.length>0){
               animate="visible"
               whileHover="hover"
             >
-             {!update?"Add AboutMe":"Update AboutMe"}
+              {!update ? "Add AboutMe" : "Update AboutMe"}
             </motion.button>
           </div>
         </div>

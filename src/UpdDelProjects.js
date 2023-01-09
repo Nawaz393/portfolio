@@ -4,10 +4,11 @@ import { Alert } from "react-bootstrap";
 import axios from "axios";
 import { Card } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import Sidebar from "./Sidebar";
+import Sidebar from "./components/Sidebar";
 import { left, right, bottom, top } from "./Anime";
-
-const nameAnime = {
+import useAuth from "./hooks/useAuth";
+import CAlert from "./components/Alert";
+const nameAnime={
   hidden: {
     x: "-100vw",
   },
@@ -21,7 +22,6 @@ const nameAnime = {
 
   hover: {
     scale: [null, 1.1, 1.06],
-
     transition: {
       delay: 0.1,
       duration: 2,
@@ -70,16 +70,34 @@ const UpdDelProjects = () => {
     link: "",
     detail: "",
   });
+  const { state } = useAuth();
   const [project, setProjects] = useState([]);
   const [update, setupdate] = useState(false);
+  const [unauth,setUnauth]=useState(false);
 
   useEffect(() => {
+if(state?.role?.toLowerCase()!=="admin"){
+  setUnauth(true);
+}
+  else{
+
+    setUnauth(false);
+  }
+
+
     (async () => {
-      const res = await axios.get("/project");
-      setProjects(res.data);
-      console.log(res.data);
+      try {
+        const res = await axios.get("/project", {
+          headers: {
+            "Authorization": `Bearer ${state.token}`,
+          },
+        });
+        setProjects(res.data);
+      } catch (error) {
+        console.log(error);
+      }
     })();
-  }, [Delete, show]);
+  }, [Delete, show,state]);
 
   const handelchange = (e) => {
     setFormval({ ...formval, [e.target.name]: e.target.value });
@@ -87,7 +105,12 @@ const UpdDelProjects = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await axios.put("/project", formval);
+    const res = await axios.put("/project", formval, {
+     
+      headers: {
+        "Authorization": `Bearer ${state.token}`,
+      },
+    });
 
     if (res.data.success) {
       setshow(true);
@@ -109,14 +132,24 @@ const UpdDelProjects = () => {
 
   const clickDelete = async (id) => {
     const data = { id: id };
+    console.log(state.token)
 
-    const res = await axios.delete("/project", { data });
+    const res = await axios.delete(
+      "/project",
+     
+      {
+        data,
+        headers: {
+          "Authorization": `Bearer ${state.token}`,
+        },
+      }
+    );
     if (!res.data.success) {
       alert(res.data.message);
     }
     setDelete(!Delete);
   };
-  console.log(project);
+ 
   const cards = project?.map((item, index) => {
     return (
       <motion.div
@@ -143,13 +176,15 @@ const UpdDelProjects = () => {
 
                     setupdate(true);
                   }}
+                  disabled={unauth}
                 >
                   Update
                 </Button>
               </span>
 
               <span className="sm:mx-5 p-2">
-                <Button variant="danger" onClick={() => clickDelete(item.id)}>
+                <Button variant="danger" onClick={() => clickDelete(item.id)}
+                disabled={unauth}>
                   Delete
                 </Button>
               </span>
@@ -180,8 +215,9 @@ const UpdDelProjects = () => {
         >
           Update and Delete Projects
         </motion.h1>
-
         <main className=" ">
+        { unauth &&  <CAlert variant="danger"  heading="Unauthorized"  text="You are authorized to update or delete projects"  />}
+
           {!update ? (
             <div className="grid grid-col-1  py-3 text-sm  gap-y-3  ">
               {cards}
@@ -203,7 +239,6 @@ const UpdDelProjects = () => {
                   >
                     Update project{" "}
                   </motion.h4>
-
                   <div className="grid lg:px-36 gap-x-2 gap-y-4 ">
                     <div className="sm:col-span-2">
                       {show && (

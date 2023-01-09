@@ -1,6 +1,6 @@
 
 import './App.css';
-import Navbar from './Navbar';
+import Navbar from './components/Navbar';
 import Name  from './Name';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Skills from './Skills';
@@ -21,10 +21,16 @@ import UpdDelSkill from './UpdDelSkill';
 import Addprojects from './Addprojects';
 import Project from "./Project"
 import RequireAuth from './RequireAuth';
+import DisplayUser from './DisplayUser';
 import UpdDelProjects from './UpdDelProjects';
 import NotRoute from './NotRoute';
+import ChangePassword from './changePassword';
+import NotAuthorized from './NotAuthorized';
 function App() {
   const location =useLocation();
+
+ 
+  
   return (
   <>
 
@@ -49,10 +55,13 @@ function App() {
 <Route path='/UpdateDeleteSkill' element={<UpdDelSkill/>}></Route>
 <Route path='/Addproject' element={<Addprojects/>}></Route>
 <Route path='updateDeleteProject' element={<UpdDelProjects/>}></Route>
+<Route path="/users" element={<DisplayUser/>}></Route>
+<Route path='/updatepassword' element={<ChangePassword/>}></Route>
 </Route>
 
 
 <Route path='*' element={<NotRoute/>}></Route>
+<Route path="/unauthorized" element={<NotAuthorized/>}></Route>
 </Routes>
 </AnimatePresence>
 <Footer/>

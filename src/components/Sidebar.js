@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-
+import { useNavigate } from "react-router-dom";
 const SideAnime = {
   hidden: {
     x: "-100vh",
@@ -29,7 +29,7 @@ const LinkAnime = {
 };
 const Sidebar = () => {
   const [toggle, settoggle] = useState(false);
-
+const navigate=useNavigate();
   const item = [
     { page: "Home", link: "/AdminDashboard" },
     { page: "ChangePic", link: "/ChangePic" },
@@ -40,7 +40,8 @@ const Sidebar = () => {
     {page:'Add Project',link:'/AddProject'},
     {page:'Change Project',link:'/UpdateDeleteProject'},
     {page:"Change about",link:"/ChangeAboutMe"},
-   
+    {page:"All Users",link:"/users"},
+    {page:"change pass",link:"/updatepassword"},
   ];
 
   const sidebsritem = item.map((item) => {
@@ -64,7 +65,7 @@ const Sidebar = () => {
   });
 
   return (
-    <motion.aside className="mt-3  h-screen  sm:w-36 sm:bg-slate-800 rounded-r-lg relative"
+    <motion.aside className="mt-3  h-screen  sm:w-36 sm:bg-slate-800 rounded-r-lg sticky z-50"
     variants={SideAnime}
     initial="hidden"
     animate="visible"
@@ -79,6 +80,7 @@ const Sidebar = () => {
         <FontAwesomeIcon icon={faBars} color="#fff" size="xl"
          />
       </button>
+
       <ul
         className={
           toggle
@@ -86,6 +88,14 @@ const Sidebar = () => {
             : "sm:flex flex-col py-6  hidden"
         }
       >
+        <button className="text-white font-Nunito underline "
+        onClick={() => {
+          
+          localStorage.clear();
+          navigate("/admin")
+          
+        }}
+        >logout</button>
         {sidebsritem}
       </ul>
     </motion.aside>

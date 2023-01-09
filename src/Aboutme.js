@@ -1,6 +1,7 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import useAuth from "./hooks/useAuth";
 const exitAnime = {
   exit: {
     y: "-100vh",
@@ -23,14 +24,12 @@ const left = {
       duration: 1.5,
     },
   },
-  hover:{
-
-    scale:[null,1.5,1.1],
-    transition:{
-        
-        duration:2
-    }
-  }
+  hover: {
+    scale: [null, 1.5, 1.1],
+    transition: {
+      duration: 2,
+    },
+  },
 };
 
 const right = {
@@ -46,29 +45,22 @@ const right = {
   },
 };
 function Aboutme() {
-
   const [aboutme, setaboutme] = useState("");
-
+  const { state } = useAuth();
   useEffect(() => {
-  
-  
-  (
-    async () => {
-      const res = await axios.get("/aboutme");
+    (async () => {
+      const res = await axios.get("/aboutme", {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
       if (res.data.length > 0) {
         setaboutme(res.data[0].text);
-      }
-
-      else{
-
+      } else {
         setaboutme(res.data.message);
       }
-    }
-  )();
-  
-  },[])
-
-
+    })();
+  }, []);
 
   return (
     <motion.div className="min-h-screen" variants={exitAnime} exit="exit">

@@ -5,10 +5,12 @@ import { Card } from "react-bootstrap";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import axios from "axios";
+import useAuth from "./hooks/useAuth";
 
 const Project = () => {
   const [error, setError] = useState("");
   const [projects, setProjects] = useState([]);
+  const {state}=useAuth()
 
   useEffect(() => {
     (async () => {

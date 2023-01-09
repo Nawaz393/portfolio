@@ -3,16 +3,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { Alert } from "react-bootstrap";
-import Sidebar from "./Sidebar";
+import Sidebar from "./components/Sidebar";
+import useAuth from "./hooks/useAuth";
 const ChangeQuote = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
   const [data, setdata] = useState({});
   const Quote = useRef();
-
-
- 
-
+  const { state } = useAuth();
   const ChangeQuote = async (e) => {
     e.preventDefault();
 
@@ -20,8 +18,12 @@ const ChangeQuote = () => {
       Quote: Quote.current.value,
     };
 
-
-    const res = await axios.put("/Quote",quotedata);
+    const res = await axios.put("/Quote", quotedata, {
+      headers: {
+        Authorization: `Bearer ${state.token}`,
+      },
+    });
+    console.log(res.data);
     if (!res.data.success) {
       setsuccess(false);
       setdata(res.data.message);
@@ -84,7 +86,7 @@ const ChangeQuote = () => {
               animate="visible"
               whileHover="hover"
             >
-             Change Quote
+              Change Quote
             </motion.button>
           </div>
         </div>

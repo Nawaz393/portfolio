@@ -4,8 +4,11 @@ import { Alert } from "react-bootstrap";
 import axios from "axios";
 import { Card } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import Sidebar from "./Sidebar";
+import Sidebar from "./components/Sidebar";
 import { left, right, bottom, top } from "./Anime";
+import useAuth from "./hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import CAlert from "./components/Alert";
 
 const nameAnime = {
   hidden: {
@@ -48,7 +51,6 @@ const CardAnime = {
     },
   },
 };
-
 const exitAnime = {
   exit: {
     y: "-100vh",
@@ -62,7 +64,7 @@ const UpdDelSkill = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
   const [data, setdata] = useState({});
-  const [Delete,setDelete]=useState(false);
+  const [Delete, setDelete] = useState(false);
   const [formval, setFormval] = useState({
     id: 0,
     name: "",
@@ -70,25 +72,42 @@ const UpdDelSkill = () => {
     image2: "",
     image3: "",
   });
+  const { state } = useAuth();
   const [skills, setSkills] = useState([]);
   const [update, setupdate] = useState(false);
-
+  const [unauth, setUnauth] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
+    if (state?.role?.toLowerCase() !== "admin") {
+      setUnauth(true);
+    } else {
+      setUnauth(false);
+    }
     (async () => {
-      const res = await axios.get("/skills");
+      const res = await axios.get("/skills", {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
+
       setSkills(res.data);
     })();
-  }, [Delete,show]);
+  }, [Delete, show, state]);
 
   const handelchange = (e) => {
-  
     setFormval({ ...formval, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await axios.put("/skills", formval);
-
+    const res = await axios.put("/skills", formval, {
+      headers: {
+        Authorization: `Bearer ${state.token}`,
+      },
+    });
+    if (res.status === 401) {
+      navigate("/unauthorized");
+    }
     if (res.data.success) {
       setshow(true);
       setsuccess(true);
@@ -107,13 +126,24 @@ const UpdDelSkill = () => {
     setFormval(skill);
   };
 
-  const clickDelete =  async(id) => {
+  const clickDelete = async (id) => {
+    const data = { id: id };
 
-const data={id:id};
+    const res = await axios.delete(
+      "/skills",
 
-  const res = await axios.delete("/skills",{data} );
- setDelete(!Delete);
-}
+      {
+        data: data,
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      }
+    );
+    if (res.status === 401) {
+      navigate("/unauthorized");
+    }
+    setDelete(!Delete);
+  };
   const cards = skills?.map((item, index) => {
     return (
       <motion.div
@@ -122,7 +152,7 @@ const data={id:id};
         animate="visible"
         whileHover="hover"
         key={index}
-        className=" w-1/3  sm:w-3/4   "
+        className=" lg:w-4/5 md:w-3/5 w-2/5 "
       >
         <Card bg="dark" text="light">
           <Card.Header as="h5">{item.name}</Card.Header>
@@ -140,16 +170,18 @@ const data={id:id};
 
                     setupdate(true);
                   }}
+                  disabled={unauth}
                 >
                   Update
                 </Button>
               </span>
 
               <span className="sm:mx-5 p-2">
-                <Button variant="danger"
-                
-                onClick={()=>clickDelete(item.id)}
-                >Delete</Button>
+                <Button variant="danger" onClick={() => clickDelete(item.id)}
+                disabled={unauth}
+                >
+                  Delete
+                </Button>
               </span>
             </div>
           </Card.Body>
@@ -176,12 +208,19 @@ const data={id:id};
           animate="visible"
           whileHover="hover"
         >
-          Update and  Delete Skills
+          Update and Delete Skills
         </motion.h1>
 
-        <main className=" ">
+        <main className=" w-full">
+          {unauth && (
+            <CAlert
+              variant="danger"
+              heading="Unauthorized"
+              text="You are authorized to update or delete skills"
+            />
+          )}
           {!update ? (
-            <div className="grid grid-col-1  py-3 text-sm  gap-y-3  ">
+            <div className="grid grid-col-1   py-3 text-sm  gap-y-3 -ml-8 sm:ml-24 md:-ml-0">
               {cards}
             </div>
           ) : (
@@ -207,10 +246,10 @@ const data={id:id};
                       {show && (
                         <Alert
                           variant={suceess ? "success" : "danger"}
-                          onClose={() => {setshow(false)
-                          setupdate(false)}
-                          
-                          }
+                          onClose={() => {
+                            setshow(false);
+                            setupdate(false);
+                          }}
                           dismissible
                         >
                           <Alert.Heading>
@@ -228,15 +267,9 @@ const data={id:id};
                       placeholder="Name"
                       required
                       type={"text"}
-                      onChange={(e) => {handelchange(e)
-                      
-                    
-                        
-                      }
-                    
-               
-                    
-                    }
+                      onChange={(e) => {
+                        handelchange(e);
+                      }}
                       value={formval.name}
                       name="name"
                       autoComplete="none"
@@ -248,7 +281,9 @@ const data={id:id};
                       initial="hidden"
                       value={formval.image1}
                       required
-                      onChange={(e) => {handelchange(e)}}
+                      onChange={(e) => {
+                        handelchange(e);
+                      }}
                       minLength={10}
                       animate="visible"
                       placeholder="image1"
@@ -263,7 +298,9 @@ const data={id:id};
                       value={formval.image2}
                       animate="visible"
                       required
-                      onChange={(e) => {handelchange(e)}}
+                      onChange={(e) => {
+                        handelchange(e);
+                      }}
                       minLength={10}
                       placeholder="image2"
                       type={"text"}
@@ -276,7 +313,9 @@ const data={id:id};
                       initial="hidden"
                       value={formval.image3}
                       minLength={10}
-                      onChange={(e) => {handelchange(e)}}
+                      onChange={(e) => {
+                        handelchange(e);
+                      }}
                       required
                       animate="visible"
                       placeholder="image3"

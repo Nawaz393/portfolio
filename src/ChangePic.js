@@ -3,25 +3,33 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { Alert } from "react-bootstrap";
-import Sidebar from "./Sidebar";
+import Sidebar from "./components/Sidebar";
+import useAuth from "./hooks/useAuth";
 const ChangePic = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
   const [data, setdata] = useState({});
+  const { state } = useAuth();
 
   const [upload, setUpload] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const img = await axios.get("/myimage");
-        
-      if (img.data.success) {
+      const img = await axios.get("/myimage", {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
+
+
+      console.log(img.data)
+      if (img.data.length>0) {
         setUpload(false);
       } else {
         setUpload(true);
       }
     })();
-  }, []);
+  }, [state]);
 
   const image = useRef();
 
@@ -32,12 +40,20 @@ const ChangePic = () => {
       image: image.current.value,
     };
 
-let res;
-    if(upload){
-        res=await axios.post("/myimage",imagedata)
-    }
-    else{
-        res = await axios.put("/myimage", imagedata);
+    let res;
+    if (upload) {
+      res = await axios.post("/myimage", imagedata, {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
+    } else {
+      res = await axios.put("/myimage",imagedata,  {
+       
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
     }
 
     if (!res.data.success) {

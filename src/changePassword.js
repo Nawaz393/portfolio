@@ -1,45 +1,37 @@
-import React, { useState, useRef ,useEffect} from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
+import useAuth from "../src/hooks/useAuth"
 
 import Sidebar from "./components/Sidebar";
 import { left, right, top, bottom, exitAnime } from "./Anime";
-import useAuth from "./hooks/useAuth";
-import CAlert from "./components/Alert";
+import { useNavigate } from "react-router-dom";
 
-
-const UserReg = () => {
+const ChangePassword = () => {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
   const [data, setdata] = useState({});
   const UserName = useRef();
   const password = useRef();
-  const email = useRef();
-  const role = useRef();
-  const [unauth,setUnauth]=useState(false)
-const {state}=useAuth();
-useEffect(() => {
- 
-  if(state.role.toLowerCase()!="admin"){
-    setUnauth(true);
-  }else{
+  const {state}=useAuth()
+  const navigate=useNavigate()
 
-    setUnauth(false)
-  }
+  const npass = useRef();
 
-
-}, [state]);
   const Register = async (e) => {
     e.preventDefault();
-    const registerdata = {
+
+    const updpassdata = {
       userName: UserName.current.value,
-      email: email.current.value,
       password: password.current.value,
-      role: role.current.value,
+      npassword: npass.current.value,
+     
     };
+
     try {
-      const res = await axios.post("/register", registerdata,{headers:{
+      const res = await axios.put("/register",updpassdata, {headers:{
+
         "Authorization":`Bearer ${state.token}`
       }});
       if (!res.data.success) {
@@ -47,6 +39,8 @@ useEffect(() => {
         setdata(res.data.message);
         setshow(true);
       } else {
+        localStorage.clear();
+        navigate("/",{replace:true});
         setsuccess(true);
         setdata(res.data.message);
         setshow(true);
@@ -72,7 +66,6 @@ useEffect(() => {
           >
             Register User{" "}
           </motion.h4>
-          { unauth &&  <CAlert variant="danger"  heading="Unauthorized"  text="you will not be able to add user"  />}
 
           <div className="grid lg:px-36 gap-x-2 gap-y-4 ">
             <div className="sm:col-span-2">
@@ -103,19 +96,6 @@ useEffect(() => {
             />
 
             <motion.input
-              variants={right}
-              initial="hidden"
-              ref={email}
-              required
-              minLength={10}
-              animate="visible"
-              placeholder="email"
-              type={"email"}
-              name="email"
-              autoComplete="none"
-              className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
-            />
-            <motion.input
               variants={left}
               initial="hidden"
               ref={password}
@@ -131,15 +111,15 @@ useEffect(() => {
             <motion.input
               variants={left}
               initial="hidden"
-              ref={role}
-              minLength={5}
+              ref={npass}
+              minLength={8}
               required
               animate="visible"
-              placeholder="Role"
+              placeholder="New password"
               type={"text"}
-              name="text"
+              name="npass"
               autoComplete="none"
-              className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none   "
+              className="rounded-lg py-2 px-3 hover:bg-gray-100  focus:outline-blue-300 border-none  sm:col-span-2  "
             />
 
             <motion.button
@@ -148,9 +128,8 @@ useEffect(() => {
               initial="hidden"
               animate="visible"
               whileHover="hover"
-              disabled={unauth}
             >
-              Register
+              update password
             </motion.button>
           </div>
         </div>
@@ -159,4 +138,4 @@ useEffect(() => {
   );
 };
 
-export default UserReg;
+export default ChangePassword;
