@@ -58,7 +58,7 @@ const UpdDelSkill = () => {
   const { state } = useAuth();
   const [unauth, setUnauth] = useState(false);
   const [users, setUsers] = useState([{}]);
-  const [userdata, setUserdata] = useState([]);
+ 
   
   useEffect(() => {
    
@@ -80,12 +80,12 @@ const UpdDelSkill = () => {
         }
       }
     })();
-  }, [Delete,  state]);
+  }, [Delete, state]);
 
   const clickDelete = async (id) => {
     const data = { id: id };
     try {
-      const res = await axios.delete(
+      await axios.delete(
         `${process.env.REACT_APP_Backened_url}/user`,
         {
           data,

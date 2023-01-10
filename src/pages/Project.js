@@ -15,15 +15,13 @@ const Project = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_Backened_url}/project`
-        );
+        const res = await axios.get(`${process.env.REACT_APP_Backened_url}/project`);
         setProjects(res.data);
       } catch (error) {
         setError(error.message);
       }
     })();
-  }, []);
+  }, [state]);
 
   return error ? (
     <h4>{error}</h4>

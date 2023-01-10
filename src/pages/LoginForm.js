@@ -13,7 +13,7 @@ function LoginForm() {
   const password = useRef();
   const navigate = useNavigate();
 
-  const { state, dispatch } = useAuth();
+  const {  dispatch } = useAuth();
 
   const Login = async (e) => {
     e.preventDefault();

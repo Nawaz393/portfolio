@@ -76,8 +76,9 @@ export default function Navbar() {
   return (
     <nav className="bg-gray-800 shadow-2xl sm:h-12 sticky  sm:items-center flex   ">
       <div className="  cursor-pointer inline sm:mr-auto  ">
-        
-        
+        <Link
+        to="/admin"
+        >
         <motion.svg
           variants={navImgAnime}
           animate="visible"
@@ -104,6 +105,7 @@ export default function Navbar() {
           <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
           <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
         </motion.svg>
+        </Link>
       </div>
       <div>
         <motion.ul
