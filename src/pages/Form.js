@@ -95,6 +95,7 @@ function Form() {
   const sendEmail = (e) => {
 
     e.preventDefault();
+    console.log(form.current);
 
     emailjs
       .sendForm("Mnawaz", "template_7d2cola", form.current, "Yu8GsycaRlV3UBd9s")
