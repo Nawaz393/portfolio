@@ -84,13 +84,24 @@ const UpdDelSkill = () => {
       setUnauth(false);
     }
     (async () => {
-      const res = await axios.get("/skills", {
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      });
 
-      setSkills(res.data);
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_Backened_url}/skills`,
+          {
+            headers: {
+              Authorization: `Bearer ${state.token}`,
+            },
+          }
+        );
+  
+        setSkills(res.data);
+      } catch (error) {
+        setsuccess(false);
+      setdata(error.message);
+      setshow(true);
+      }
+    
     })();
   }, [Delete, show, state]);
 
@@ -99,26 +110,36 @@ const UpdDelSkill = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const res = await axios.put("/skills", formval, {
+try {
+  const res = await axios.put(
+    `${process.env.REACT_APP_Backened_url}/skills`,
+    formval,
+    {
       headers: {
         Authorization: `Bearer ${state.token}`,
       },
-    });
-    if (res.status === 401) {
-      navigate("/unauthorized");
     }
-    if (res.data.success) {
-      setshow(true);
-      setsuccess(true);
-      setdata(res.data.message);
-    } else {
-      setshow(true);
-      setsuccess(false);
-      setdata(res.data.message);
-    }
+  );
+  if (res.status === 401) {
+    navigate("/unauthorized");
+  }
+  if (res.data.success) {
+    setshow(true);
+    setsuccess(true);
+    setdata(res.data.message);
+  } else {
+    setshow(true);
+    setsuccess(false);
+    setdata(res.data.message);
+  }
 
-    e.target.reset();
+  e.target.reset();
+} catch (error) {
+  setsuccess(false);
+      setdata(error.message);
+      setshow(true);
+}
+
   };
 
   const clickupdate = (id) => {
@@ -128,21 +149,27 @@ const UpdDelSkill = () => {
 
   const clickDelete = async (id) => {
     const data = { id: id };
+try {
+  const res = await axios.delete(
+    `${process.env.REACT_APP_Backened_url}/skills`,
 
-    const res = await axios.delete(
-      "/skills",
-
-      {
-        data: data,
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      }
-    );
-    if (res.status === 401) {
-      navigate("/unauthorized");
+    {
+      data: data,
+      headers: {
+        Authorization: `Bearer ${state.token}`,
+      },
     }
-    setDelete(!Delete);
+  );
+  if (res.status === 401) {
+    navigate("/unauthorized");
+  }
+  setDelete(!Delete);
+} catch (error) {
+  setsuccess(false);
+      setdata(error.message);
+      setshow(true);
+}
+
   };
   const cards = skills?.map((item, index) => {
     return (

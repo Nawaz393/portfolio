@@ -13,7 +13,7 @@ function LoginForm() {
   const password = useRef();
   const navigate = useNavigate();
 
-  const { state,dispatch } = useAuth();
+  const { state, dispatch } = useAuth();
 
   const Login = async (e) => {
     e.preventDefault();
@@ -24,7 +24,9 @@ function LoginForm() {
     };
 
     try {
-      const res = await axios.post("/login",logindata, 
+      const res = await axios.post(
+        `${process.env.REACT_APP_Backened_url}/login`,
+        logindata
       );
       if (!res.data.success) {
         setsuccess(false);
@@ -33,10 +35,10 @@ function LoginForm() {
       } else {
         const { user, token } = res?.data;
         const { name, role } = user;
-       
-        dispatch({type:"LOGIN",payload:{name,role,token}});
+
+        dispatch({ type: "LOGIN", payload: { name, role, token } });
         localStorage.setItem("user", JSON.stringify({ name, role, token }));
-      navigate("/adminDashboard", { replace: true });
+        navigate("/adminDashboard", { replace: true });
       }
     } catch (error) {
       if (error.response?.status === 404) {

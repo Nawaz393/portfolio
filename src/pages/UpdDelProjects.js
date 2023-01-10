@@ -84,14 +84,19 @@ const UpdDelProjects = () => {
 
     (async () => {
       try {
-        const res = await axios.get("/project", {
-          headers: {
-            Authorization: `Bearer ${state.token}`,
-          },
-        });
+        const res = await axios.get(
+          `${process.env.REACT_APP_Backened_url}/project`,
+          {
+            headers: {
+              Authorization: `Bearer ${state.token}`,
+            },
+          }
+        );
         setProjects(res.data);
       } catch (error) {
-        console.log(error);
+        setsuccess(false);
+        setdata(error.message);
+        setshow(true);
       }
     })();
   }, [Delete, show, state]);
@@ -102,23 +107,33 @@ const UpdDelProjects = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await axios.put("/project", formval, {
-      headers: {
-        Authorization: `Bearer ${state.token}`,
-      },
-    });
+    try {
+      const res = await axios.put(
+        `${process.env.REACT_APP_Backened_url}/project`,
+        formval,
+        {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      );
 
-    if (res.data.success) {
-      setshow(true);
-      setsuccess(true);
-      setdata(res.data.message);
-    } else {
-      setshow(true);
+      if (res.data.success) {
+        setshow(true);
+        setsuccess(true);
+        setdata(res.data.message);
+      } else {
+        setshow(true);
+        setsuccess(false);
+        setdata(res.data.message);
+      }
+
+      e.target.reset();
+    } catch (error) {
       setsuccess(false);
-      setdata(res.data.message);
+      setdata(error.message);
+      setshow(true);
     }
-
-    e.target.reset();
   };
 
   const clickupdate = (id) => {
@@ -128,22 +143,26 @@ const UpdDelProjects = () => {
 
   const clickDelete = async (id) => {
     const data = { id: id };
-    console.log(state.token);
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_Backened_url}/project`,
 
-    const res = await axios.delete(
-      "/project",
-
-      {
-        data,
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
+        {
+          data,
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      );
+      if (!res.data.success) {
+        alert(res.data.message);
       }
-    );
-    if (!res.data.success) {
-      alert(res.data.message);
+      setDelete(!Delete);
+    } catch (error) {
+      setsuccess(false);
+      setdata(error.message);
+      setshow(true);
     }
-    setDelete(!Delete);
   };
 
   const cards = project?.map((item, index) => {

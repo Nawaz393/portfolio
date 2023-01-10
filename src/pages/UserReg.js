@@ -19,7 +19,7 @@ const UserReg = () => {
   const [unauth, setUnauth] = useState(false);
   const { state } = useAuth();
   useEffect(() => {
-    if (state.role.toLowerCase() != "admin") {
+    if (state.role.toLowerCase() !== "admin") {
       setUnauth(true);
     } else {
       setUnauth(false);
@@ -34,11 +34,15 @@ const UserReg = () => {
       role: role.current.value,
     };
     try {
-      const res = await axios.post("/register", registerdata, {
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_Backened_url}/register`,
+        registerdata,
+        {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      );
       if (!res.data.success) {
         setsuccess(false);
         setdata(res.data.message);

@@ -1,9 +1,9 @@
-import React, { useState, useRef,useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
-import {useNavigate} from "react-router-dom"
+
 import { left, right, bottom, top, exitAnime } from "./Anime";
 import useAuth from "../hooks/useAuth";
 import CAlert from "../components/Alert";
@@ -15,22 +15,18 @@ const Addprojects = () => {
   const image = useRef();
   const link = useRef();
   const detail = useRef();
-  const [unauth,setUnauth]=useState(false)
-  const navigate=useNavigate()
+  const [unauth, setUnauth] = useState(false);
+  
 
-const {state}=useAuth()
+  const { state } = useAuth();
 
-useEffect(() => {
-
-if(state.role.toLowerCase()!="admin"){
-  setUnauth(true);
-}else{
-
-  setUnauth(false)
-}
-
-
-},[state])
+  useEffect(() => {
+    if (state.role.toLowerCase() !== "admin") {
+      setUnauth(true);
+    } else {
+      setUnauth(false);
+    }
+  }, [state]);
   const AddProject = async (e) => {
     e.preventDefault();
 
@@ -41,19 +37,17 @@ if(state.role.toLowerCase()!="admin"){
       detail: detail.current.value,
     };
 
-
-
-  
     try {
-      const res = await axios.post("/project",projectdata, {headers:{
-
-        "Authorization":`Bearer ${state.token}`
-      }}
-
-   
+      const res = await axios.post(
+        `${process.env.REACT_APP_Backened_url}/project`,
+        projectdata,
+        {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
       );
 
-      console.log(res.data);
       if (res.data.success) {
         setsuccess(true);
         setdata(res.data.message);
@@ -85,7 +79,13 @@ if(state.role.toLowerCase()!="admin"){
           >
             Add New Project{" "}
           </motion.h4>
-          { unauth &&  <CAlert variant="danger"  heading="Unauthorized"  text="you are unathorized to use this page"  />}
+          {unauth && (
+            <CAlert
+              variant="danger"
+              heading="Unauthorized"
+              text="you are unathorized to use this page"
+            />
+          )}
 
           <div className="grid lg:px-36 gap-x-2 gap-y-4 ">
             <div className="sm:col-span-2">

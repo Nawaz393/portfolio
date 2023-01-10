@@ -15,7 +15,9 @@ const Project = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get("/project");
+        const res = await axios.get(
+          `${process.env.REACT_APP_Backened_url}/project`
+        );
         setProjects(res.data);
       } catch (error) {
         setError(error.message);

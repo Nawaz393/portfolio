@@ -1,5 +1,5 @@
 import { top, bottom, left, exitAnime } from "./Anime";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { Alert } from "react-bootstrap";
@@ -18,22 +18,33 @@ const ChangeQuote = () => {
       Quote: Quote.current.value,
     };
 
-    const res = await axios.put("/Quote", quotedata, {
-      headers: {
-        Authorization: `Bearer ${state.token}`,
-      },
-    });
-    console.log(res.data);
-    if (!res.data.success) {
+    try {
+      const res = await axios.put(
+        `${process.env.REACT_APP_Backened_url}/Quote`,
+        quotedata,
+        {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      );
+  
+      if (!res.data.success) {
+        setsuccess(false);
+        setdata(res.data.message);
+        setshow(true);
+      } else {
+        setsuccess(true);
+        setdata(res.data.message);
+        setshow(true);
+      }
+      e.target.reset();
+    } catch (error) {
       setsuccess(false);
-      setdata(res.data.message);
-      setshow(true);
-    } else {
-      setsuccess(true);
-      setdata(res.data.message);
+      setdata(error.message);
       setshow(true);
     }
-    e.target.reset();
+
   };
   return (
     <motion.div className="min-h-screen flex " variants={exitAnime} exit="exit">

@@ -15,16 +15,28 @@ const ChangeAboutMe = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get("/aboutme",{headers:{
 
-        "Authorization":`Bearer ${state.token}`
-      }});
-
-      if (res.data.length > 0) {
-        setupdate(true);
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_Backened_url}/aboutme`,
+          {
+            headers: {
+              Authorization: `Bearer ${state.token}`,
+            },
+          }
+        );
+  
+        if (res.data.length > 0) {
+          setupdate(true);
+        }
+      } catch (error) {
+        setsuccess(false);
+        setdata(error.message);
+        setshow(true);
       }
+ 
     })();
-  }, []);
+  }, [state]);
 
   const ChangeAboutMe = async (e) => {
     e.preventDefault();
@@ -35,15 +47,17 @@ const ChangeAboutMe = () => {
 
     let res;
     if (update) {
-      res = await axios.put("/aboutme", aboutmedata,{headers:{
-
-        "Authorization":`Bearer ${state.token}`
-      }});
+      res = await axios.put("/aboutme", aboutmedata, {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
     } else {
-      res = await axios.post("/aboutme", aboutmedata,{headers:{
-
-        "Authorization":`Bearer ${state.token}`
-      }});
+      res = await axios.post("/aboutme", aboutmedata, {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
     }
     if (!res.data.success) {
       setsuccess(false);

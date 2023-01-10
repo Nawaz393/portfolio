@@ -70,20 +70,20 @@ const exitAnime = {
 function Name() {
   const [image, setImage] = useState("");
   const [error, setError] = useState("");
-const[quote,setQuote]=useState("");
-const {state}=useAuth()
+  const [quote, setQuote] = useState("");
+  const { state } = useAuth();
 
   useEffect(() => {
     (async () => {
       try {
+        const res1 = await axios.get(
+          `${process.env.REACT_APP_Backened_url}/myimage`
+        );
+        const res2 = await axios.get(
+          `${process.env.REACT_APP_Backened_url}/Quote`
+        );
 
-     const res1=  await axios.get("/myimage")
-   const res2=  await axios.get("/Quote")
-   
-        
-        
-        
-setQuote(res2.data[0].Quote);
+        setQuote(res2.data[0].Quote);
         setImage(res1.data[0].image);
       } catch (error) {
         setError(error.message);
@@ -91,7 +91,7 @@ setQuote(res2.data[0].Quote);
     })();
   }, []);
 
-
+ 
   return (
     <motion.div
       className="  min-h-screen bg-gray-800 flex justify-center items-center"
@@ -124,7 +124,7 @@ setQuote(res2.data[0].Quote);
           animate="visible"
           whileHover="hover"
         >
-         {quote}
+          {quote}
         </motion.h5>
       </div>
     </motion.div>

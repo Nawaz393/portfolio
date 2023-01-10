@@ -61,18 +61,26 @@ const AdminDashBoard = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get("/admin", {
-        headers: {
-          Authorization: `Bearer ${state?.token}`,
-        },
-      });
 
-      setcount(res.data);
-      console.log("resdata" +JSON.stringify(res.data));
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_Backened_url}/admin`,
+          {
+            headers: {
+              Authorization: `Bearer ${state?.token}`,
+            },
+          }
+        );
+  
+        setcount(res.data);
+      } catch (error) {
+       
+      }
+     
     })();
   }, [state]);
 
-  const [data, setdata] = useState([{ name: "Users" }, { name: "Skills" }]);
+  const data =[{ name: "Users" }, { name: "Skills" }]
 
   const cards = data.map((item, index) => {
     return (
@@ -87,7 +95,7 @@ const AdminDashBoard = () => {
           <Card.Body>
             <Card.Title>{item.name}</Card.Title>
             <Card.Subtitle>
-              {count.length == 1 ? count[0]?.Count : count[index]?.Count}
+              {count.length === 1 ? count[0]?.Count : count[index]?.Count}
             </Card.Subtitle>
           </Card.Body>
         </Card>

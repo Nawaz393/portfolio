@@ -15,18 +15,25 @@ const ChangePic = () => {
 
   useEffect(() => {
     (async () => {
-      const img = await axios.get("/myimage", {
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      });
 
-      console.log(img.data);
-      if (img.data.length > 0) {
-        setUpload(false);
-      } else {
-        setUpload(true);
+      try {
+        const img = await axios.get("/myimage", {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        });
+  
+        if (img.data.length > 0) {
+          setUpload(false);
+        } else {
+          setUpload(true);
+        }
+      } catch (error) {
+        setsuccess(false);
+        setdata(error.message);
+        setshow(true);
       }
+ 
     })();
   }, [state]);
 
@@ -41,17 +48,25 @@ const ChangePic = () => {
 
     let res;
     if (upload) {
-      res = await axios.post("/myimage", imagedata, {
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      });
+      res = await axios.post(
+        `${process.env.REACT_APP_Backened_url}/myimage`,
+        imagedata,
+        {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      );
     } else {
-      res = await axios.put("/myimage", imagedata, {
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      });
+      res = await axios.put(
+        `${process.env.REACT_APP_Backened_url}/myimage`,
+        imagedata,
+        {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      );
     }
 
     if (!res.data.success) {

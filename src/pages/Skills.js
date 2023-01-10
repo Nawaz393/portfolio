@@ -111,16 +111,26 @@ const imagesAnime = {
 
 function Skills() {
   const [allskills, setAllSkills] = React.useState();
-  const {state}=useAuth();
+  const { state } = useAuth();
   React.useEffect(() => {
     (async () => {
-      const res = await axios.get("/skills",{headers:{
-        "Authorization":`Bearer ${state.token}`
-      }});
-   
-      const data = res.data;
-
-      setAllSkills(data);
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_Backened_url}/skills`,
+          {
+            headers: {
+              Authorization: `Bearer ${state.token}`,
+            },
+          }
+        );
+  
+        const data = res.data;
+  
+        setAllSkills(data);
+      } catch (error) {
+     
+      }
+     
       // try {
 
       //   const res =await fetch("/skills");
@@ -129,7 +139,7 @@ function Skills() {
 
       // }
     })();
-  }, []);
+  }, [state]);
 
   return (
     <motion.div
@@ -152,68 +162,67 @@ function Skills() {
         </motion.h2>
       </motion.div>
       <div className="h-full flex items-center justify-center ">
-      <div
-        className="grid md:grid-cols-3 
+        <div
+          className="grid md:grid-cols-3 
       sm:grid-cols-2 grid-cols-1  sm:gap-y-48 sm:gap-x-64 gap-y-72 sm:pb-16"
-      >
-        {allskills?.map((skill) => {
-          return (
-            <div
-              className="  flex flex-col justify-evenly items-start "
-              key={skill.id}
-            >
-              <motion.div
-                className=""
-                variants={text}
-                initial="hidden"
-                animate="visible"
+        >
+          {allskills?.map((skill) => {
+            return (
+              <div
+                className="  flex flex-col justify-evenly items-start "
+                key={skill.id}
               >
-                {" "}
-                <motion.h5
-                  className="text-gray-300  sm:text-sm text-xs tracking-tighter font-Nunito   capitalize pl-7 pb-3"
-                  variants={hotext}
-                  whileHover="hover"
+                <motion.div
+                  className=""
+                  variants={text}
+                  initial="hidden"
+                  animate="visible"
                 >
-                  {skill.name}
-                </motion.h5>
-              </motion.div>
-
-              <motion.div
-                variants={imagesAnime}
-                initial="hidden"
-                animate="visible"
-              >
-                <div className="px-3 ">
                   {" "}
-                  <motion.img
-                    variants={image3}
-                    animate="visible"
-                    src={skill.image1}
-                    alt="not found"
-                    className=" sm:h-1/4 sm:w-1/6 h-1/5 w-1/4 absolute shadow-lg shadow-white rounded-xl bg-white"
-                  ></motion.img>
-                  <motion.img
-                    variants={image2}
-                    animate="visible"
-                    src={skill.image2}
-                    alt="not found"
-                    className=" sm:h-1/4 sm:w-1/6 h-1/5 w-1/4 absolute shadow-xl shadow-gray-600 rounded-xl bg-white"
-                  />
-                  <motion.img
-                    variants={image1}
-                    animate="visible"
-                    src={skill.image3}
-                    alt="not found"
-                    className="sm:h-1/4 sm:w-1/6  h-1/5 w-1/4 absolute shadow-xl shadow-black rounded-xl bg-white"
-                  />
-                </div>
-                
-              </motion.div>
-            </div>
-          );
-        })}
-        <div></div>
-      </div>
+                  <motion.h5
+                    className="text-gray-300  sm:text-sm text-xs tracking-tighter font-Nunito   capitalize pl-7 pb-3"
+                    variants={hotext}
+                    whileHover="hover"
+                  >
+                    {skill.name}
+                  </motion.h5>
+                </motion.div>
+
+                <motion.div
+                  variants={imagesAnime}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <div className="px-3 ">
+                    {" "}
+                    <motion.img
+                      variants={image3}
+                      animate="visible"
+                      src={skill.image1}
+                      alt="not found"
+                      className=" sm:h-1/4 sm:w-1/6 h-1/5 w-1/4 absolute shadow-lg shadow-white rounded-xl bg-white"
+                    ></motion.img>
+                    <motion.img
+                      variants={image2}
+                      animate="visible"
+                      src={skill.image2}
+                      alt="not found"
+                      className=" sm:h-1/4 sm:w-1/6 h-1/5 w-1/4 absolute shadow-xl shadow-gray-600 rounded-xl bg-white"
+                    />
+                    <motion.img
+                      variants={image1}
+                      animate="visible"
+                      src={skill.image3}
+                      alt="not found"
+                      className="sm:h-1/4 sm:w-1/6  h-1/5 w-1/4 absolute shadow-xl shadow-black rounded-xl bg-white"
+                    />
+                  </div>
+                </motion.div>
+              </div>
+            );
+          })}
+          <div></div>
+        </div>
       </div>
     </motion.div>
   );

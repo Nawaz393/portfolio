@@ -25,15 +25,17 @@ const AddSkills = () => {
       image3: image3.current.value,
     };
 
-    console.log(skilldata);
     try {
-      const res = await axios.post("/skills", skilldata, {
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_Backened_url}/skills`,
+        skilldata,
+        {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      );
 
-      console.log(res.data);
       if (res.data.success) {
         setsuccess(true);
         setdata(res.data.message);

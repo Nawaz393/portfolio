@@ -49,18 +49,29 @@ function Aboutme() {
   const { state } = useAuth();
   useEffect(() => {
     (async () => {
-      const res = await axios.get("/aboutme", {
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      });
-      if (res.data.length > 0) {
-        setaboutme(res.data[0].text);
-      } else {
-        setaboutme(res.data.message);
+
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_Backened_url}/aboutme`,
+          {
+            headers: {
+              Authorization: `Bearer ${state.token}`,
+            },
+          }
+        );
+        if (res.data.length > 0) {
+          setaboutme(res.data[0].text);
+        } else {
+          setaboutme(res.data.message);
+        }
+        
+      } catch (error) {
+        
+        
       }
+   
     })();
-  }, []);
+  }, [state]);
 
   return (
     <motion.div className="min-h-screen" variants={exitAnime} exit="exit">

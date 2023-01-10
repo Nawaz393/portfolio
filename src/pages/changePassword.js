@@ -5,7 +5,7 @@ import axios from "axios";
 import useAuth from "../hooks/useAuth";
 
 import Sidebar from "../components/Sidebar";
-import { left, right, top, bottom, exitAnime } from "./Anime";
+import { left,  top, bottom, exitAnime } from "./Anime";
 import { useNavigate } from "react-router-dom";
 
 const ChangePassword = () => {
@@ -29,11 +29,15 @@ const ChangePassword = () => {
     };
 
     try {
-      const res = await axios.put("/register", updpassdata, {
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
-      });
+      const res = await axios.put(
+        `${process.env.REACT_APP_Backened_url}/register`,
+        updpassdata,
+        {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      );
       if (!res.data.success) {
         setsuccess(false);
         setdata(res.data.message);
