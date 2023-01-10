@@ -86,6 +86,7 @@ function Name() {
         setImage(res1.data[0].image);
       } catch (error) {
         setError(error.message);
+        console.log(error)
       }
     })();
   }, []);

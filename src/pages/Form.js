@@ -97,7 +97,7 @@ function Form() {
     e.preventDefault();
 
     emailjs
-      .sendForm("Mnawaz", process.env.REACT_APP_Form_template, form.current, process.env.REACT_APP_Form_Api)
+      .sendForm("Mnawaz", "template_7d2cola", form.current, "Yu8GsycaRlV3UBd9s")
       .then(
         (result) => {
           setsuccess(true);
