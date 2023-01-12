@@ -3,6 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
+import Loading from "../components/loading";
 const image1 = {
   visible: {
     rotateY: 360,
@@ -112,6 +113,7 @@ const imagesAnime = {
 function Skills() {
   const [allskills, setAllSkills] = React.useState();
   const { state } = useAuth();
+  const [loading, setloading] = React.useState(true);
   React.useEffect(() => {
     (async () => {
       try {
@@ -124,6 +126,10 @@ function Skills() {
           }
         );
   
+        if(res){
+
+          setloading(false);
+        }
         const data = res.data;
   
         setAllSkills(data);
@@ -160,9 +166,11 @@ function Skills() {
         >
           The skills i have{" "}
         </motion.h2>
+
+
       </motion.div>
       <div className="h-full flex items-center justify-center ">
-        <div
+     {  loading ?(<Loading/>):(<div
           className="grid md:grid-cols-3 
       sm:grid-cols-2 grid-cols-1  sm:gap-y-48 sm:gap-x-64 gap-y-72 sm:pb-16"
         >
@@ -222,7 +230,7 @@ function Skills() {
             );
           })}
           <div></div>
-        </div>
+        </div>)}
       </div>
     </motion.div>
   );

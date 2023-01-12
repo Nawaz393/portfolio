@@ -2,6 +2,7 @@ import React from "react";
 import emailjs from "emailjs-com";
 import { Alert } from "react-bootstrap";
 import { motion } from "framer-motion";
+import Loading from "../components/loading";
 
 const left = {
   hidden: {
@@ -89,13 +90,13 @@ const exitAnime={
 function Form() {
   const [suceess, setsuccess] = React.useState(false);
   const [show, setshow] = React.useState(false);
-
+const [loading,setloading]=React.useState(false);
   const form = React.useRef();
 
   const sendEmail = (e) => {
 
     e.preventDefault();
-   
+   setloading(true);
 
     emailjs
       .sendForm("Mnawaz", "template_7d2cola", form.current, "Yu8GsycaRlV3UBd9s")
@@ -103,8 +104,10 @@ function Form() {
         (result) => {
           setsuccess(true);
           setshow(true);
+          setloading(false);
         },
         (error) => {
+          setloading(false);
           setsuccess(false);
           setshow(true);
         }
@@ -192,6 +195,7 @@ function Form() {
             >
               Submit
             </motion.button>
+            {loading &&<div className="sm:col-span-2 flex justify-center "><Loading/></div>}
           </div>
         </div>
       </form>

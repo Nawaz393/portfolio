@@ -6,16 +6,20 @@ import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
+import Loading from "../components/loading";
 
 const Project = () => {
   const [error, setError] = useState("");
   const [projects, setProjects] = useState([]);
   const { state } = useAuth();
+  const [loading,setloading]=useState(true);
+
 
   useEffect(() => {
     (async () => {
       try {
         const res = await axios.get(`${process.env.REACT_APP_Backened_url}/project`);
+        setloading(false)
         setProjects(res.data);
       } catch (error) {
         setError(error.message);
@@ -41,7 +45,8 @@ const Project = () => {
           {" "}
           Projects
         </motion.h1>
-        <motion.div className="grid grid-col-1 sm:grid-cols-2 md:grid-cols-3 gap-y-5  py-5">
+        {loading?(<Loading/>):
+        (<motion.div className="grid grid-col-1 sm:grid-cols-2 md:grid-cols-3 gap-y-5  py-5">
           {projects?.map((item, index) => {
             return (
               <motion.div
@@ -81,7 +86,7 @@ const Project = () => {
               </motion.div>
             );
           })}
-        </motion.div>
+        </motion.div>)}
       </motion.div>
     </motion.div>
   );

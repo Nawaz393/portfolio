@@ -5,18 +5,23 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { left, right, top, bottom, exitAnime } from "./Anime";
+import Loading from "../components/loading";
 function LoginForm() {
   const [suceess, setsuccess] = useState(false);
   const [show, setshow] = useState(false);
   const [data, setdata] = useState("");
   const userName = useRef();
   const password = useRef();
+  const [loading,setloading]=useState(false);
+
   const navigate = useNavigate();
 
   const {  dispatch } = useAuth();
 
   const Login = async (e) => {
+
     e.preventDefault();
+    setloading(true);
 
     const logindata = {
       userName: userName.current.value,
@@ -28,6 +33,9 @@ function LoginForm() {
         `${process.env.REACT_APP_Backened_url}/login`,
         logindata
       );
+      if(res){
+        setloading(false);
+      }
       if (!res.data.success) {
         setsuccess(false);
         setdata(res.data.message);
@@ -121,6 +129,7 @@ function LoginForm() {
             >
               Login
             </motion.button>
+            { loading && <div className="text-center flex justify-center items-center text-gray-400"><Loading/></div>}
           </div>
         </div>
       </form>

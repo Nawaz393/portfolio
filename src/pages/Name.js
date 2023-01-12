@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import Loading from "../components/loading";
 const nameAnime = {
   hidden: {
     x: "-100vw",
@@ -70,7 +71,7 @@ function Name() {
   const [image, setImage] = useState("");
   const [error, setError] = useState("");
   const [quote, setQuote] = useState("");
-
+    const [loading, setloading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -81,6 +82,10 @@ function Name() {
         const res2 = await axios.get(
           `${process.env.REACT_APP_Backened_url}/Quote`
         );
+        if(res1){
+
+          setloading(false)
+        }
 
         setQuote(res2.data[0].Quote);
         setImage(res1.data[0].image);
@@ -108,6 +113,8 @@ function Name() {
         >
           Muhammad Nawaz khan{" "}
         </motion.h1>
+
+        {loading ? (<Loading/>):(
         <motion.img
           src={image}
           className=" rounded-xl  bg-yellow-100 mt-5 h-2/4 sm:w-1/3 w-4/6"
@@ -116,7 +123,7 @@ function Name() {
           initial="hidden"
           animate="visible"
           whileHover="hover"
-        />
+        />)}
         <motion.h5
           className="text-white px-3 md:text-lg  text-sm tracking-tighter font-Nunito mt-5 "
           variants={paraAnime}

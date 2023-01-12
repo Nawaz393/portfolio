@@ -26,6 +26,7 @@ import UpdDelProjects from './pages/UpdDelProjects';
 import NotRoute from './pages/NotRoute';
 import ChangePassword from './pages/changePassword';
 import NotAuthorized from './pages/NotAuthorized';
+import Loading from './components/loading';
 function App() {
   const location =useLocation();
 
@@ -45,6 +46,7 @@ function App() {
 <Route path='/About' element={<Aboutme/>}/>
 <Route path='/Projects' element={<Project/>}></Route>
 <Route path='/admin' element={<LoginForm/>}/>
+<Route path='/load' element={<Loading/>}/>
 <Route element={<RequireAuth/>}>
 <Route path='/AdminDashboard' element={<AdminDashBoard/>}></Route>
 <Route path='/RegisterUser' element={<UserReg/>}></Route>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
+import Loading from "../components/loading";
 const exitAnime = {
   exit: {
     y: "-100vh",
@@ -46,6 +47,7 @@ const right = {
 };
 function Aboutme() {
   const [aboutme, setaboutme] = useState("");
+  const [loading, setloading] = useState(true);
   const { state } = useAuth();
   useEffect(() => {
     (async () => {
@@ -59,6 +61,11 @@ function Aboutme() {
             },
           }
         );
+
+        if(res){
+
+          setloading(false);
+        }
         if (res.data.length > 0) {
           setaboutme(res.data[0].text);
         } else {
@@ -85,6 +92,7 @@ function Aboutme() {
         >
           About Me
         </motion.h2>
+        {loading ? (<Loading/>):(
         <motion.p
           className="text-gray-300 text-lg tracking-tighter px-4 font-Nunito text-semibold"
           variants={right}
@@ -92,7 +100,7 @@ function Aboutme() {
           animate="visible"
         >
           {aboutme}
-        </motion.p>
+        </motion.p>)}
       </div>
     </motion.div>
   );
