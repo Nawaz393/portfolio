@@ -27,9 +27,7 @@ export const AuthProvider = ({ children }) => {
     role: null,
     token: null,
   });
-  // const [run,isrun] = useState(false);
-
-//immediatly upadte the state when page refreshes
+ 
 
 
 

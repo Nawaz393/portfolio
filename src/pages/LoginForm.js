@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -12,14 +12,17 @@ function LoginForm() {
   const [data, setdata] = useState("");
   const userName = useRef();
   const password = useRef();
-  const [loading,setloading]=useState(false);
-
+  const [loading, setloading] = useState(false);
   const navigate = useNavigate();
-
-  const {  dispatch } = useAuth();
+  const { dispatch } = useAuth();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      navigate("/adminDashboard", { replace: true });
+    }
+  }, []);
 
   const Login = async (e) => {
-
     e.preventDefault();
     setloading(true);
 
@@ -33,7 +36,7 @@ function LoginForm() {
         `${process.env.REACT_APP_Backened_url}/login`,
         logindata
       );
-      if(res){
+      if (res) {
         setloading(false);
       }
       if (!res.data.success) {
@@ -129,7 +132,11 @@ function LoginForm() {
             >
               Login
             </motion.button>
-            { loading && <div className="text-center flex justify-center items-center text-gray-400"><Loading/></div>}
+            {loading && (
+              <div className="text-center flex justify-center items-center text-gray-400">
+                <Loading />
+              </div>
+            )}
           </div>
         </div>
       </form>
