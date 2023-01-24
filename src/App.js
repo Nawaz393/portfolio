@@ -47,6 +47,7 @@ function App() {
 <Route path='/Projects' element={<Project/>}></Route>
 <Route path='/admin' element={<LoginForm/>}/>
 <Route path='/load' element={<Loading/>}/>
+
 <Route element={<RequireAuth/>}>
 <Route path='/AdminDashboard' element={<AdminDashBoard/>}></Route>
 <Route path='/RegisterUser' element={<UserReg/>}></Route>
