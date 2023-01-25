@@ -6,21 +6,26 @@ import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { left, right, top, bottom, exitAnime } from "./Anime";
 import Loading from "../components/loading";
+
 function LoginForm() {
-  const [suceess, setsuccess] = useState(false);
+  const [suceess, setsuccess] = useState(false); 
   const [show, setshow] = useState(false);
   const [data, setdata] = useState("");
   const userName = useRef();
   const password = useRef();
   const [loading, setloading] = useState(false);
   const navigate = useNavigate();
+  
+
   const { dispatch } = useAuth();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      navigate("/adminDashboard", { replace: true });
+      navigate("/adminDashboard", { replace: false });
+      
     }
-  }, []);
+ 
+  }, [navigate]);
 
   const Login = async (e) => {
     e.preventDefault();

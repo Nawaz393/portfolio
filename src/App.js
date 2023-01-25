@@ -58,7 +58,7 @@ function App() {
 <Route path='/UpdateDeleteSkill' element={<UpdDelSkill/>}></Route>
 <Route path='/Addproject' element={<Addprojects/>}></Route>
 <Route path='updateDeleteProject' element={<UpdDelProjects/>}></Route>
-<Route path="/users" element={<DisplayUser/>}></Route>
+<Route path="/users" element={<DisplayUser/>}/>
 <Route path='/updatepassword' element={<ChangePassword/>}></Route>
 </Route>
 

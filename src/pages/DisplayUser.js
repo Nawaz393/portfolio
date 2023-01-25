@@ -101,9 +101,7 @@ const UpdDelSkill = () => {
   };
   //check the users array that it is present and then map on it.
 
-  const cards =
-    users.length > 0 ? (
-      users.map((item, index) => {
+  const cards =  users?.map((item, index) => {
         return (
           <motion.div
             variants={CardAnime}
@@ -133,9 +131,8 @@ const UpdDelSkill = () => {
           </motion.div>
         );
       })
-    ) : (
-      <></>
-    );
+  
+  
 
   return (
     <motion.div
