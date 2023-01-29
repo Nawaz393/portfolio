@@ -3,11 +3,16 @@ import { isJwtExpired } from "jwt-check-expiration";
 
 const RequireAuth = () => {
   const location = useLocation();
-  if (isJwtExpired(JSON.parse(localStorage.getItem("user"))?.token)) {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
+    return <Navigate to="/admin" state={{ from: location }} replace />;
+  }
+  if (isJwtExpired(user?.token)) {
     localStorage.clear();
     return <Navigate to="/admin" state={{ from: location }} replace />;
   }
-  return JSON.parse(localStorage.getItem("user"))?.name ? (
+  return user?.name ? (
     <Outlet />
   ) : (
     <Navigate to="/admin" state={{ from: location }} replace />

@@ -54,15 +54,12 @@ const exitAnime = {
   },
 };
 const UpdDelSkill = () => {
-    const [Delete, setDelete] = useState(false);
+  const [Delete, setDelete] = useState(false);
   const { state } = useAuth();
   const [unauth, setUnauth] = useState(false);
-  const [users, setUsers] = useState([{}]);
- 
-  
-  useEffect(() => {
-   
+  const [users, setUsers] = useState();
 
+  useEffect(() => {
     (async () => {
       try {
         const res = await axios.get("/user", {
@@ -72,8 +69,9 @@ const UpdDelSkill = () => {
         });
         if (res.status === 200) {
           setUnauth(false);
+          console.log(res.data);
+          setUsers(res.data);
         }
-        setUsers(res.data || [{}]);
       } catch (error) {
         if (error.response.status === 401) {
           setUnauth(true);
@@ -85,54 +83,16 @@ const UpdDelSkill = () => {
   const clickDelete = async (id) => {
     const data = { id: id };
     try {
-      await axios.delete(
-        `${process.env.REACT_APP_Backened_url}/user`,
-        {
-          data,
-          headers: {
-            Authorization: `Bearer ${state.token}`,
-          },
-        }
-      );
+      await axios.delete(`${process.env.REACT_APP_Backened_url}/user`, {
+        data,
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
       setDelete(!Delete);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
   //check the users array that it is present and then map on it.
-
-  const cards =  users?.map((item, index) => {
-        return (
-          <motion.div
-            variants={CardAnime}
-            initial="hidden"
-            animate="visible"
-            whileHover="hover"
-            key={index}
-            className="lg:w-4/5   "
-          >
-            <Card bg="dark" text="light">
-              <Card.Header as="h5">{item.userName}</Card.Header>
-              <Card.Body>
-                <Card.Text>{item.email}</Card.Text>
-                <Card.Text>{item.role}</Card.Text>
-                <div className="my-3 ">
-                  <span className="sm:mx-5 p-2">
-                    <Button
-                      variant="danger"
-                      onClick={() => clickDelete(item.id)}
-                    >
-                      Delete
-                    </Button>
-                  </span>
-                </div>
-              </Card.Body>
-            </Card>
-          </motion.div>
-        );
-      })
-  
-  
 
   return (
     <motion.div
@@ -158,7 +118,7 @@ const UpdDelSkill = () => {
         <main className=" flex justify-center items-center w-full">
           <div
             className=" grid grid-cols-1   
-          
+  
           gap-y-4
           w-full "
           >
@@ -169,7 +129,36 @@ const UpdDelSkill = () => {
                 text="You are not authorized to access this page"
               />
             )}
-            {cards}
+            {users?.map((item, index) => {
+              return (
+                <motion.div
+                  variants={CardAnime}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover="hover"
+                  key={index}
+                  className="lg:w-4/5   "
+                >
+                  <Card bg="dark" text="light">
+                    <Card.Header as="h5">{item.userName}</Card.Header>
+                    <Card.Body>
+                      <Card.Text>{item.email}</Card.Text>
+                      <Card.Text>{item.role}</Card.Text>
+                      <div className="my-3 ">
+                        <span className="sm:mx-5 p-2">
+                          <Button
+                            variant="danger"
+                            onClick={() => clickDelete(item.id)}
+                          >
+                            Delete
+                          </Button>
+                        </span>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </motion.div>
+              );
+            })}
           </div>
         </main>
       </div>
