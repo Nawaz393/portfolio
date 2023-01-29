@@ -129,7 +129,7 @@ const UpdDelSkill = () => {
                 text="You are not authorized to access this page"
               />
             )}
-            {users?.map((item, index) => {
+            {Array.isArray(users)?users?.map((item, index) => {
               return (
                 <motion.div
                   variants={CardAnime}
@@ -158,7 +158,7 @@ const UpdDelSkill = () => {
                   </Card>
                 </motion.div>
               );
-            })}
+            }):null}
           </div>
         </main>
       </div>
