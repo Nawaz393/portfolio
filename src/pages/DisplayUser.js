@@ -67,7 +67,7 @@ const UpdDelSkill = () => {
             Authorization: `Bearer ${state.token}`,
           },
         });
-        if (res.status === 200) {
+        if (res.status === 304 || res.status === 200) {
           setUnauth(false);
           console.log(res.data);
           setUsers(res.data);
@@ -129,36 +129,38 @@ const UpdDelSkill = () => {
                 text="You are not authorized to access this page"
               />
             )}
-            {Array.isArray(users)?users?.map((item, index) => {
-              return (
-                <motion.div
-                  variants={CardAnime}
-                  initial="hidden"
-                  animate="visible"
-                  whileHover="hover"
-                  key={index}
-                  className="lg:w-4/5   "
-                >
-                  <Card bg="dark" text="light">
-                    <Card.Header as="h5">{item.userName}</Card.Header>
-                    <Card.Body>
-                      <Card.Text>{item.email}</Card.Text>
-                      <Card.Text>{item.role}</Card.Text>
-                      <div className="my-3 ">
-                        <span className="sm:mx-5 p-2">
-                          <Button
-                            variant="danger"
-                            onClick={() => clickDelete(item.id)}
-                          >
-                            Delete
-                          </Button>
-                        </span>
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </motion.div>
-              );
-            }):null}
+            {Array.isArray(users)
+              ? users?.map((item, index) => {
+                  return (
+                    <motion.div
+                      variants={CardAnime}
+                      initial="hidden"
+                      animate="visible"
+                      whileHover="hover"
+                      key={index}
+                      className="lg:w-4/5   "
+                    >
+                      <Card bg="dark" text="light">
+                        <Card.Header as="h5">{item.userName}</Card.Header>
+                        <Card.Body>
+                          <Card.Text>{item.email}</Card.Text>
+                          <Card.Text>{item.role}</Card.Text>
+                          <div className="my-3 ">
+                            <span className="sm:mx-5 p-2">
+                              <Button
+                                variant="danger"
+                                onClick={() => clickDelete(item.id)}
+                              >
+                                Delete
+                              </Button>
+                            </span>
+                          </div>
+                        </Card.Body>
+                      </Card>
+                    </motion.div>
+                  );
+                })
+              : null}
           </div>
         </main>
       </div>
