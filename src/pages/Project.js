@@ -54,6 +54,7 @@ const Project = () => {
           variants={bottom}
           initial="hidden"
           animate="visible"
+          
         >
           <motion.h1
             className="text-gray-500 font-Nerko py-2"
