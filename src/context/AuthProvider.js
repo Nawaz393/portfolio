@@ -1,8 +1,7 @@
-import { createContext,useReducer, useEffect } from "react";
+import { createContext, useReducer, useEffect } from "react";
 const AuthContext = createContext();
 
 export const authreducer = (state, action) => {
-    
   switch (action.type) {
     case "LOGIN":
       return {
@@ -27,27 +26,15 @@ export const AuthProvider = ({ children }) => {
     role: null,
     token: null,
   });
- 
-
-
-
 
   useEffect(() => {
-
-    const isuser =  JSON.parse(localStorage.getItem("user"));
-    if(isuser){
-     
-
-    const { name, role, token } = isuser;
-   dispatch({type:"LOGIN",payload:{name,role,token}});
-
-
-
+    const isuser = JSON.parse(localStorage.getItem("user"));
+    if (isuser) {
+      const { name, role, token } = isuser;
+      dispatch({ type: "LOGIN", payload: { name, role, token } });
     }
   }, []);
-  
-  
-  
+
   return (
     <AuthContext.Provider value={{ state, dispatch }}>
       {children}

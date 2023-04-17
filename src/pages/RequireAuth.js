@@ -4,7 +4,6 @@ import { isJwtExpired } from "jwt-check-expiration";
 const RequireAuth = () => {
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem("user"));
-
   if (!user) {
     return <Navigate to="/admin" state={{ from: location }} replace />;
   }
